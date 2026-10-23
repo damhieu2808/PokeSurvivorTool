@@ -65,6 +65,7 @@
     autoRestart: true,
     restartSteps: [
       /^(play again|try again|retry|restart|jugar de nuevo|volver a jugar|reintentar|otra vez|chơi lại)/i,
+      /^(back to menu|volver al men[uú]|về menu)/i,
       /^(play|jugar|chơi)/i,
       /^(start|go!?|let'?s go|comenzar|empezar|bắt đầu)/i,
       /^(back|menu|volver|ok|aceptar|close|cerrar|đóng)$/i,
@@ -379,7 +380,8 @@
   // ---------- level-up ----------
   // Priority: level up an owned skill (most-levelled first) > offensive passive > new skill
   // (only while under CFG.maxSkills) > defensive passive. Status / no-damage moves are avoided.
-  const visible = el => el && el.offsetParent !== null;
+  // getClientRects (not offsetParent, which is null for position:fixed menus) + not hidden
+  const visible = el => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
   const ATK_RE = /damage|dmg|power|attack|crit|cooldown|hit|area|projectile|range|pierce|burst|daño|dano|ataque|dégât/i;
   const DEF_RE = /hp|health|heal|regen|armor|armour|defen|shield|speed|magnet|pickup|vida|salud/i;
   const fontSize = el => parseFloat(getComputedStyle(el).fontSize) || 0;
@@ -491,11 +493,24 @@
   }
 
   // ---------- auto replay ----------
+  // Runs forever (game over -> Back to menu -> Play -> ...) until the bot is switched off with F8.
+  // Acts when the game-over screen or the main menu's Play button is on screen, or as a fallback
+  // when the HUD timer has stopped ticking (the menu background may keep rendering the map).
   function autoRestart(now) {
-    if (!CFG.autoRestart || !state.on || now - (state.lastTimer || 0) < 2500 || now < (state.restartAt || 0)) return;
-    if (visible(document.getElementById('lvl-num'))) return;
+    if (!CFG.autoRestart || !state.on || now < (state.restartAt || 0)) return;
     state.restartAt = now + 1500;
-    const buttons = [...document.querySelectorAll('button, [role=button]')].filter(b => visible(b) && !panel.contains(b));
+    // Paused for a choice (level-up / item / bond) is not the end of a run
+    if (visible(document.getElementById('lvl-num'))) return;
+    const leaves = [...document.querySelectorAll('body *')].filter(e => !e.children.length && visible(e));
+    if (leaves.some(e => /only hold one|An item!|Bond!|to bond/i.test(e.innerText || ''))) return;
+    // Only buttons actually on top at their centre (not faded out / covered by the game canvas)
+    const onTop = b => { const r = b.getBoundingClientRect(), t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!t && (t === b || b.contains(t)); };
+    const buttons = [...document.querySelectorAll('button, [role=button]')].filter(b => visible(b) && !panel.contains(b) && onTop(b));
+    const over = leaves.some(e => /you fell|game over|has caído|caíste/i.test(e.innerText || ''));
+    const menu = buttons.some(b => /^(play|jugar)/i.test((b.innerText || '').trim()) && /dungeon|mazmorra/i.test(b.innerText));
+    if (!over && !menu && now - (state.timerChangedAt || 0) < 2500) return;
+    if (over && !state.runEnded) state.runs = (state.runs || 0) + 1;
+    state.runEnded = over;
     for (const re of CFG.restartSteps) {
       const b = buttons.find(b => { const x = (b.innerText || '').trim(); return re.test(x) && !CFG.restartAvoid.test(x); });
       if (b) { log('tự chơi lại: bấm', JSON.stringify(b.innerText.trim().slice(0, 40))); b.click(); return; }
@@ -564,13 +579,14 @@
     const v = state.view;
     hud.textContent = tag.on
       ? (tag.pending ? `${tag.pending}: 1=tốt 2=nguy hiểm 3=rift 4=vật cản 5=buff 6=kinh nghiệm 7=vali 0=xoá nhãn Esc=huỷ` : 'GẮN NHÃN (F7): click vào vật trên màn hình')
-      : `bot ${state.on ? 'ON' : 'OFF'} (F8)${state.dwell ? ` · mở vali ${(state.dwell.t / 1000).toFixed(1)}/${CFG.caseTime / 1000}s` : ''} · địch ${v ? v.enemies.length : 0} · exp ${v ? v.xps.length : 0} (hút ${Math.round(state.magnet)}) · tốt ${v ? v.goods.length : 0} · buff ${v ? v.buffs.length : 0} · nguy hiểm ${v ? v.hazards.length : 0} · rift ${v ? v.rifts.length : 0} · chặn rank ${state.netBlocked}`;
+      : `bot ${state.on ? 'ON' : 'OFF'} (F8) · ván ${(state.runs || 0) + 1}${state.dwell ? ` · mở vali ${(state.dwell.t / 1000).toFixed(1)}/${CFG.caseTime / 1000}s` : ''} · địch ${v ? v.enemies.length : 0} · exp ${v ? v.xps.length : 0} (hút ${Math.round(state.magnet)}) · tốt ${v ? v.goods.length : 0} · buff ${v ? v.buffs.length : 0} · nguy hiểm ${v ? v.hazards.length : 0} · rift ${v ? v.rifts.length : 0} · chặn rank ${state.netBlocked}`;
     if (tag.on && tag.box) { g.strokeStyle = '#fff'; g.lineWidth = 2; g.strokeRect(tag.box.x - tag.box.w / 2, tag.box.y - tag.box.h / 2, tag.box.w, tag.box.h); }
     if (state.highlight) {
       g.strokeStyle = '#0ff'; g.lineWidth = 2;
       state.lastFrame.forEach(d => { if (d.src === state.highlight) g.strokeRect(d.x - Math.abs(d.w) / 2 - 3, d.y - Math.abs(d.h) / 2 - 3, Math.abs(d.w) + 6, Math.abs(d.h) + 6); });
     }
-    if (!state.debug || !v) return;
+    // Hide world markers while the game is paused / on menus (they'd be drawn over the dialogs)
+    if (!state.debug || !v || performance.now() - (state.timerChangedAt || 0) > 1500) return;
     g.lineWidth = 2;
     const ring = (list, color, r) => { g.strokeStyle = color; list.forEach(d => { g.beginPath(); g.arc(d.x, d.y, r(d), 0, 7); g.stroke(); }); };
     ring(v.enemies, '#f44', () => 10);
