@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "PokeSurvivor Bot",
+  "version": "1.0.0",
+  "description": "Auto-play bot and coin-farming preset for pokesurvivor.com (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
+  "content_scripts": [
+    {
+      "matches": ["https://pokesurvivor.com/*"],
+      "js": ["bot.js", "farmMoney.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ]
+}

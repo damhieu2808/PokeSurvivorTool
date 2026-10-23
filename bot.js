@@ -5,13 +5,15 @@
 // @run-at       document-idle
 // ==/UserScript==
 //
-// Paste into DevTools Console (or install as a Tampermonkey userscript).
+// Paste into DevTools Console, install as a Tampermonkey userscript, or load this folder as a Chrome extension (manifest.json).
 // F6 = danh mục mọi sprite (ảnh + chỉ số + nút gắn nhãn) · F7 = gắn nhãn bằng click (1 tốt / 2 nguy hiểm / 3 rift / 4 vật cản / 5 buff / 6 kinh nghiệm / 7 vali / 0 xoá)
 // F8 = bật/tắt bot · F9 = overlay · PSBot.catalog() = in + copy danh mục · PSBot.tags() = xem nhãn đã lưu
 // PSBot.exportConfig() = copy nhãn + build (JSON) để dán vào CFG.tags / CFG.builds bên dưới
 // While loaded, Firestore/RTDB writes whose path matches CFG.rankRe are replaced by no-ops.
 // Reload the page to play normally (unblocked) again.
-(() => {
+(function start() {
+  // Loaded by the extension at document_idle the game canvas may not exist yet: retry until it does
+  if (!document.getElementById('game')) return void setTimeout(start, 500);
   if (window.PSBot) window.PSBot.unload();
 
   const CFG = {
@@ -71,6 +73,7 @@
       /^(back|menu|volver|ok|aceptar|close|cerrar|đóng)$/i,
     ],
     restartAvoid: /together|juntos|friend|amigo|gacha|shop|tienda|log ?out|sign|link|delete|borrar|revive|revivir|gem|buy|comprar/i,
+    background: true,     // keep the game running when the tab is hidden / window covered (see "keep running")
     blockRank: true,
     rankRe: /rank|leader|board|score|season/i,
     logNet: true,
@@ -704,6 +707,41 @@
   panel.addEventListener('mouseover', e => { const r = e.target.closest('[data-row]'); state.highlight = r ? r.dataset.row : null; });
   panel.addEventListener('mouseleave', () => { state.highlight = null; });
 
+  // ---------- keep running in a background tab / covered window ----------
+  // 1) The game pauses on visibilitychange / blur: swallow those and report the page as visible.
+  // 2) Chrome stops requestAnimationFrame when the tab is hidden or the window fully covered:
+  //    every rAF request is also queued, and a Web Worker tick (~60 Hz, not throttled like page
+  //    timers) runs any callback the browser hasn't run within 40 ms.
+  const nativeRAF = window.requestAnimationFrame, nativeCAF = window.cancelAnimationFrame;
+  const visDesc = { hidden: Object.getOwnPropertyDescriptor(document, 'hidden'), visibilityState: Object.getOwnPropertyDescriptor(document, 'visibilityState') };
+  const origHasFocus = document.hasFocus;
+  const swallow = e => { if (CFG.background) e.stopImmediatePropagation(); };
+  let bgWorker = null;
+  if (CFG.background) {
+    ['visibilitychange', 'webkitvisibilitychange', 'blur', 'pagehide', 'freeze'].forEach(t => window.addEventListener(t, swallow, true));
+    Object.defineProperty(document, 'hidden', { get: () => false, configurable: true });
+    Object.defineProperty(document, 'visibilityState', { get: () => 'visible', configurable: true });
+    document.hasFocus = () => true;
+
+    const pending = new Map();                                       // id -> { cb, at, native }
+    let seq = 0;
+    const run = id => { const p = pending.get(id); if (!p) return; pending.delete(id); nativeCAF.call(window, p.native); p.cb(performance.now()); };
+    window.requestAnimationFrame = cb => {
+      const id = ++seq;
+      pending.set(id, { cb, at: performance.now(), native: nativeRAF.call(window, () => run(id)) });
+      return id;
+    };
+    window.cancelAnimationFrame = id => { const p = pending.get(id); if (p) { nativeCAF.call(window, p.native); pending.delete(id); } };
+    const fallback = () => { const now = performance.now(); for (const [id, p] of [...pending]) if (now - p.at > 40) run(id); };
+    try {
+      bgWorker = new Worker(URL.createObjectURL(new Blob(['setInterval(() => postMessage(0), 16)'], { type: 'text/javascript' })));
+      bgWorker.onmessage = fallback;
+    } catch (err) {
+      log('không tạo được Worker (CSP?) — chạy nền sẽ bị Chrome giới hạn ~1 khung hình/giây', err);
+      bgWorker = { terminate: clearInterval.bind(null, setInterval(fallback, 16)) };
+    }
+  }
+
   // ---------- main loop ----------
   const origRAF = window.requestAnimationFrame.bind(window);
   let running = true, lastResend = 0, lastPanel = 0;
@@ -801,6 +839,13 @@
       running = false; applyDir(null);
       P.drawImage = origDraw; P.arc = origArc; P.fillText = origText;
       Object.assign(P, pathOrig);
+      if (bgWorker) {
+        bgWorker.terminate();
+        window.requestAnimationFrame = nativeRAF; window.cancelAnimationFrame = nativeCAF;
+        ['visibilitychange', 'webkitvisibilitychange', 'blur', 'pagehide', 'freeze'].forEach(t => window.removeEventListener(t, swallow, true));
+        for (const k of ['hidden', 'visibilityState']) { if (visDesc[k]) Object.defineProperty(document, k, visDesc[k]); else delete document[k]; }
+        document.hasFocus = origHasFocus;
+      }
       XMLHttpRequest.prototype.open = XO; XMLHttpRequest.prototype.send = XS; WebSocket.prototype.send = WS;
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener('pointerdown', onClick, true);

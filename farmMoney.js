@@ -4,8 +4,12 @@
 //
 // Coins (end-of-run screen): Time + Defeated + Bosses + collected pickups, × Fortune.
 // Pickups and bosses pay the most, so: pick up everything, go for rifts/bosses, favour Amulet Coin.
-(() => {
-  if (!window.PSBot) { console.warn('[PSFarm] chạy bot.js trước'); return; }
+(function start(tries = 0) {
+  // bot.js may still be waiting for the game canvas (extension load): retry for a while
+  if (!window.PSBot) {
+    if (tries < 120) return void setTimeout(() => start(tries + 1), 500);
+    console.warn('[PSFarm] chạy bot.js trước'); return;
+  }
   if (window.PSFarm) window.PSFarm.unload();
   const { CFG } = window.PSBot;
   const log = (...a) => console.log('%c[PSFarm]', 'color:#fc3', ...a);
