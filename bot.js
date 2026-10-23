@@ -81,7 +81,8 @@
 
   const canvas = document.getElementById('game');
   const state = {
-    on: true, debug: true, keys: {}, dir: null, frame: [], lastFrame: [], texts: [], hudTexts: new Set(),
+    // Idle until ▶ Chạy in the control panel (or F8); target = runs to play (0 = forever), done = runs finished
+    on: false, target: 0, done: 0, debug: true, keys: {}, dir: null, frame: [], lastFrame: [], texts: [], hudTexts: new Set(),
     posHist: [], walls: [], ignore: [], stuck: [], escape: null, pickAt: 0, netBlocked: 0, picks: {}, newSkills: 0,
     magnet: CFG.magnet, prevXp: [],
   };
@@ -513,8 +514,13 @@
     const over = leaves.some(e => /you fell|game over|has caído|caíste/i.test(e.innerText || ''));
     const menu = buttons.some(b => /^(play|jugar)/i.test((b.innerText || '').trim()) && /dungeon|mazmorra/i.test(b.innerText));
     if (!over && !menu && now - (state.timerChangedAt || 0) < 2500) return;
-    if (over && !state.runEnded) state.runs = (state.runs || 0) + 1;
+    const justEnded = over && !state.runEnded;
     state.runEnded = over;
+    if (justEnded) {
+      state.done++;
+      log(`xong ván ${state.done}${state.target ? `/${state.target}` : ''}`);
+      if (state.target && state.done >= state.target) { state.on = false; applyDir(null); log('đã chơi đủ số ván — dừng'); return; }
+    }
     for (const re of CFG.restartSteps) {
       const b = buttons.find(b => { const x = (b.innerText || '').trim(); return re.test(x) && !CFG.restartAvoid.test(x); });
       if (b) { log('tự chơi lại: bấm', JSON.stringify(b.innerText.trim().slice(0, 40))); b.click(); return; }
@@ -583,7 +589,7 @@
     const v = state.view;
     hud.textContent = tag.on
       ? (tag.pending ? `${tag.pending}: 1=tốt 2=nguy hiểm 3=rift 4=vật cản 5=buff 6=kinh nghiệm 7=vali 0=xoá nhãn Esc=huỷ` : 'GẮN NHÃN (F7): click vào vật trên màn hình')
-      : `bot ${state.on ? 'ON' : 'OFF'} (F8) · ván ${(state.runs || 0) + 1}${state.dwell ? ` · mở vali ${(state.dwell.t / 1000).toFixed(1)}/${CFG.caseTime / 1000}s` : ''} · địch ${v ? v.enemies.length : 0} · exp ${v ? v.xps.length : 0} (hút ${Math.round(state.magnet)}) · tốt ${v ? v.goods.length : 0} · buff ${v ? v.buffs.length : 0} · nguy hiểm ${v ? v.hazards.length : 0} · rift ${v ? v.rifts.length : 0} · chặn rank ${state.netBlocked}`;
+      : `bot ${state.on ? 'ON' : 'OFF'} (F8) · ván ${state.done + 1}${state.target ? `/${state.target}` : ''}${state.dwell ? ` · mở vali ${(state.dwell.t / 1000).toFixed(1)}/${CFG.caseTime / 1000}s` : ''} · địch ${v ? v.enemies.length : 0} · exp ${v ? v.xps.length : 0} (hút ${Math.round(state.magnet)}) · tốt ${v ? v.goods.length : 0} · buff ${v ? v.buffs.length : 0} · nguy hiểm ${v ? v.hazards.length : 0} · rift ${v ? v.rifts.length : 0} · chặn rank ${state.netBlocked}`;
     if (tag.on && tag.box) { g.strokeStyle = '#fff'; g.lineWidth = 2; g.strokeRect(tag.box.x - tag.box.w / 2, tag.box.y - tag.box.h / 2, tag.box.w, tag.box.h); }
     if (state.highlight) {
       g.strokeStyle = '#0ff'; g.lineWidth = 2;
@@ -613,6 +619,52 @@
     g.strokeStyle = '#ff4'; g.beginPath(); g.arc(v.me.x, v.me.y, CFG.contact * v.s, 0, 7); g.stroke();
     if (v.target) { g.strokeStyle = '#fff8'; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(v.me.x, v.me.y); g.lineTo(v.target.x, v.target.y); g.stroke(); g.setLineDash([]); }
     if (state.dir) { g.strokeStyle = '#4cf'; g.beginPath(); g.moveTo(v.me.x, v.me.y); g.lineTo(v.me.x + state.dir[0] * 40, v.me.y + state.dir[1] * 40); g.stroke(); }
+  }
+
+  // ---------- control panel: ▶ play N runs (0 = forever), ⏸ pause / resume, ■ stop ----------
+  const RUNS_KEY = 'psbot.runs';
+  const ctl = document.createElement('div');
+  ctl.style.cssText = 'position:fixed;top:4px;left:4px;z-index:99999;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
+  const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
+  ctl.innerHTML = `
+    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot</div>
+    <label style="display:flex;align-items:center;gap:6px">Số ván
+      <input data-ctl="runs" type="number" min="0" step="1" style="width:60px;font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px">
+      <span style="color:#9ab">0 = vô hạn</span></label>
+    <div style="display:flex;gap:4px">
+      <button data-ctl="play" style="${btnCss};background:#4c4">▶ Chạy</button>
+      <button data-ctl="pause" style="${btnCss};background:#fc3">⏸ Tạm dừng</button>
+      <button data-ctl="stop" style="${btnCss};background:#f66">■ Dừng</button>
+    </div>
+    <div data-ctl="status" style="color:#9ab"></div>`;
+  document.body.append(ctl);
+  const $ = k => ctl.querySelector(`[data-ctl="${k}"]`);
+  try { $('runs').value = localStorage.getItem(RUNS_KEY) || '5'; } catch { $('runs').value = '5'; }
+  // Keep typing / clicks in the panel away from the game's keyboard and pointer handlers
+  ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click'].forEach(t => ctl.addEventListener(t, e => e.stopPropagation()));
+
+  const control = {
+    play() {
+      const n = Math.max(0, Math.floor(+$('runs').value || 0));
+      try { localStorage.setItem(RUNS_KEY, String(n)); } catch {}
+      Object.assign(state, { target: n, done: 0, runEnded: false, on: true, started: true, restartAt: 0 });
+      log(`chạy ${n ? `${n} ván` : 'vô hạn'}`);
+    },
+    pause() { state.on = false; applyDir(null); log('tạm dừng — bạn có thể tự điều khiển'); },
+    resume() { state.on = true; log('tiếp tục'); },
+    stop() { Object.assign(state, { on: false, target: 0, done: 0, started: false }); applyDir(null); log('dừng'); },
+  };
+  $('play').onclick = () => control.play();
+  $('pause').onclick = () => (state.on ? control.pause() : control.resume());
+  $('stop').onclick = () => control.stop();
+
+  function renderCtl() {
+    const finished = state.target && state.done >= state.target;
+    $('pause').textContent = state.on ? '⏸ Tạm dừng' : '▶ Tiếp tục';
+    $('pause').disabled = !state.on && (!state.started || finished);      // nothing to resume
+    $('status').textContent = finished ? `Đã xong ${state.done}/${state.target} ván`
+      : !state.started && !state.on ? 'Chưa chạy — nhập số ván rồi bấm ▶'
+      : `${state.on ? 'Đang chạy' : 'Tạm dừng'} · ván ${state.done + 1}${state.target ? `/${state.target}` : ' (vô hạn)'}`;
   }
 
   // ---------- catalog (F6): every world sprite type seen, with thumbnail + stats ----------
@@ -757,6 +809,7 @@
     }
     if (frame.length) { state.lastFrame = frame; collect(frame); tick(frame); }
     if (t - lastPanel > 1000 && !panel.matches(':hover')) { lastPanel = t; renderPanel(); }
+    renderCtl();
     levelUp();
     dialogPick();
     autoRestart(t);
@@ -807,6 +860,9 @@
 
   window.PSBot = {
     CFG, state,
+    // PSBot.play(5) = chơi 5 ván (0 = vô hạn) · PSBot.pause() / resume() / stop()
+    play(n) { if (n !== undefined) $('runs').value = n; control.play(); },
+    pause: () => control.pause(), resume: () => control.resume(), stop: () => control.stop(),
     sources() {
       const by = {};
       state.lastFrame.forEach(d => { (by[d.src] ||= []).push([Math.round(d.x), Math.round(d.y)]); });
@@ -849,7 +905,7 @@
       XMLHttpRequest.prototype.open = XO; XMLHttpRequest.prototype.send = XS; WebSocket.prototype.send = WS;
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener('pointerdown', onClick, true);
-      ov.remove(); hud.remove(); panel.remove();
+      ov.remove(); hud.remove(); panel.remove(); ctl.remove();
       delete window.PSBot;
       log('unloaded');
     },
