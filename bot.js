@@ -422,6 +422,7 @@
     else if (DEF_RE.test(t)) { score += 1; why.push('nội tại phòng thủ'); }
     if (card.querySelector('.fit-low')) { score -= 3; why.push('hợp kém với pokémon'); }
     if (card.querySelector('.fit-high')) { score += 2; why.push('hợp tốt'); }
+    if (CFG.bonusRe && CFG.bonusRe.test(t)) { score += CFG.bonusScore || 0; why.push('ưu tiên preset'); }   // set by presets (farmMoney.js)
     return { key: k.innerText.trim(), name, isNew, score, why: why.join(', '), text: t.replace(/\s+/g, ' ').slice(0, 100) };
   }
   function levelUp() {
