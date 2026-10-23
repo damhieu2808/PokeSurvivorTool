@@ -642,7 +642,11 @@
       c.prev = list.length <= 40 ? list : null;
     }
   }
-  const catalogRows = () => [...catalog.values()].sort((a, b) => a.max - b.max);
+  // On-screen sprites first (easy to find and tag), then by how rare they are per frame
+  const catalogRows = () => {
+    const now = performance.now(), live = c => now - c.lastSeen < 1500;
+    return [...catalog.values()].sort((a, b) => live(b) - live(a) || a.max - b.max);
+  };
   const thumbs = new Map();
   function thumb(c) {
     if (thumbs.has(c.src)) return thumbs.get(c.src);
