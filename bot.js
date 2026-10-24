@@ -60,7 +60,7 @@
     // Pokémon name (as shown in the HUD, lower-case) -> moves in priority order (survivortiers.pages.dev).
     // Build moves are always taken/levelled first; moves outside the build are avoided. Add more with PSBot.setBuild().
     builds: {
-      kartana: ['Meteor Mash', 'Seed Bomb', 'Harden', 'Swords Dance'],
+      kartana: ['Vine Whip', 'Quick Attack', 'Harden', 'Swords Dance'],
       mewtwo: ['Hyper Beam', 'Psychic', 'Harden', 'Nasty Plot'],
     },
     // Auto replay: when no run is active, click the first visible button matching these, in order
@@ -698,10 +698,10 @@
       c.prev = list.length <= 40 ? list : null;
     }
   }
-  // On-screen sprites first (easy to find and tag), then by how rare they are per frame
+  // Enemies last (already handled, no tagging needed), then on-screen sprites first, then by how rare they are per frame
   const catalogRows = () => {
-    const now = performance.now(), live = c => now - c.lastSeen < 1500;
-    return [...catalog.values()].sort((a, b) => live(b) - live(a) || a.max - b.max);
+    const now = performance.now(), live = c => now - c.lastSeen < 1500, enemy = c => CFG.enemyRe.test(c.src);
+    return [...catalog.values()].sort((a, b) => enemy(a) - enemy(b) || live(b) - live(a) || a.max - b.max);
   };
   const thumbs = new Map();
   function thumb(c) {
