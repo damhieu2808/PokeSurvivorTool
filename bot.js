@@ -8,7 +8,7 @@
 // Paste into DevTools Console, install as a Tampermonkey userscript, or load this folder as a Chrome extension (manifest.json).
 // F6 = danh mục mọi sprite (ảnh + chỉ số + nút gắn nhãn) · F7 = gắn nhãn bằng click (1 tốt / 2 nguy hiểm / 3 rift / 4 vật cản / 5 buff / 6 kinh nghiệm / 7 vali / 0 xoá)
 // F8 = bật/tắt bot · F9 = overlay · PSBot.catalog() = in + copy danh mục · PSBot.tags() = xem nhãn đã lưu
-// PSBot.exportConfig() = copy nhãn + build (JSON) để dán vào CFG.tags / CFG.builds bên dưới
+// PSBot.exportConfig() / nút "Xuất data.js" (F6) = tải data.js chứa nhãn + build; chép đè vào thư mục extension để máy khác có sẵn
 // While loaded, Firestore/RTDB writes whose path matches CFG.rankRe are replaced by no-ops.
 // Reload the page to play normally (unblocked) again.
 (function start() {
@@ -39,12 +39,21 @@
     // src -> 'good' | 'hazard' | 'rift' | 'wall' | 'buff' | 'safe'; edit with F6/F7, saved in localStorage
     tags: { 'canvas:14x14': 'hazard', 'canvas:12x12': 'hazard' },
     autoPick: true,
+    // Consumable item slots (hotkeys 5-8): pressed blindly while a run is unpaused, so any item gets used at once
+    useItems: true,
+    itemKeys: ['5', '6', '7', '8'],
+    itemEvery: 1000,      // ms between presses
+    // Only the active move fires: cycle it (E = next) so every move's cooldown gets used
+    swapSkills: true,
+    swapEvery: 10,        // ms between switches; the bot loop runs once per frame (~16 ms), so below that = every frame
+    // Held items to drop for any other item, even an unknown one
+    swapAwayItems: ['choice band'],
     // Held items ("An item! You can only hold one"): higher = better. The site lists them unranked,
     // so this ranking favours damage/cooldown, then survival, then utility. Edit freely.
     itemScores: {
       'quick claw': 9,      // -20% cooldown on every move, no downside
       'life orb': 8,        // +30% damage, small HP cost per attack (never KOs)
-      'choice band': 7,     // +40% damage, but locks moves
+      'choice band': 0,     // +40% damage, but locks moves (breaks E skill cycling): only when nothing else is offered
       'leftovers': 7,       // 1.5% max HP/s regen
       'assault vest': 7,    // -20% damage taken
       'lucky egg': 6,       // +30% XP -> more levels
@@ -56,13 +65,10 @@
     },
     // Card text that marks "this pick unlocks the evolution of a maxed skill" (adjust once the real wording is known)
     evoRe: /evol|evoluc|awaken|despert|unlock|desbloq|tiến hoá|★|⭐/i,
-    maxSkills: 2,         // total active skills (incl. the starting one) when the pokémon has no build below
-    // Pokémon name (as shown in the HUD, lower-case) -> moves in priority order (survivortiers.pages.dev).
-    // Build moves are always taken/levelled first; moves outside the build are avoided. Add more with PSBot.setBuild().
-    builds: {
-      kartana: ['Vine Whip', 'Quick Attack', 'Harden', 'Swords Dance'],
-      mewtwo: ['Hyper Beam', 'Psychic', 'Harden', 'Nasty Plot'],
-    },
+    maxSkills: 2,         // total active skills (incl. the starting one) when the pokémon has no build
+    // Pokémon name (as shown in the HUD, lower-case) -> moves in priority order. Build moves are always
+    // taken/levelled first; moves outside the build are avoided. Set them in the "Moveset" popup (saved to data.js on export).
+    builds: {},
     // Auto replay: when no run is active, click the first visible button matching these, in order
     autoRestart: true,
     restartSteps: [
@@ -87,11 +93,17 @@
     magnet: CFG.magnet, prevXp: [],
   };
   const log = (...a) => console.log('%c[PSBot]', 'color:#7cf', ...a);
+  // Priority: defaults above < data.js (bundled with the extension, same on every machine) < localStorage (this browser)
+  const DATA = window.PSBotData || {};
+  Object.assign(CFG.tags, DATA.tags);
+  const userBuilds = { ...DATA.builds };
   const TAG_KEY = 'psbot.tags';
   try { Object.assign(CFG.tags, JSON.parse(localStorage.getItem(TAG_KEY) || '{}')); } catch {}
   const saveTags = () => { try { localStorage.setItem(TAG_KEY, JSON.stringify(CFG.tags)); } catch {} };
   const BUILD_KEY = 'psbot.builds';
-  try { Object.assign(CFG.builds, JSON.parse(localStorage.getItem(BUILD_KEY) || '{}')); } catch {}
+  try { Object.assign(userBuilds, JSON.parse(localStorage.getItem(BUILD_KEY) || '{}')); } catch {}
+  Object.assign(CFG.builds, userBuilds);
+  for (const k in CFG.builds) if (!CFG.builds[k].length) delete CFG.builds[k];   // [] = build deleted on this machine
 
   // ---------- frame capture ----------
   const P = CanvasRenderingContext2D.prototype;
@@ -445,6 +457,21 @@
     tap(c.key, `Digit${c.key}`, 48 + +c.key);
   }
 
+  // Only while the run timer is ticking and no level-up is open: the dialogs also use digit hotkeys
+  function useItems(t) {
+    if (!CFG.useItems || !state.on || t < (state.itemAt || 0)) return;
+    if (!state.timerText || t - state.timerChangedAt > 1100 || visible(document.getElementById('lvl-num'))) return;
+    state.itemAt = t + CFG.itemEvery;
+    CFG.itemKeys.forEach(k => tap(k, `Digit${k}`, 48 + +k));
+  }
+  function swapSkills(t) {
+    if (!CFG.swapSkills || !state.on || t < (state.swapAt || 0)) return;
+    if (!state.timerText || t - state.timerChangedAt > 1100 || visible(document.getElementById('lvl-num'))) return;
+    state.swapAt = t + CFG.swapEvery;
+    // Press + release at once: tap()'s 60 ms hold would leave E down and swallow the next presses
+    sendKey('keydown', 'e', 'KeyE', 69); sendKey('keyup', 'e', 'KeyE', 69);
+  }
+
   // ---------- choice dialogs: held item ("An item!") and move bonding ("Bond!") ----------
   // Climb from the header to the first ancestor that `isDialog` accepts, then split it into
   // option rows: one per single-digit hotkey, widened while the ancestor holds only that digit.
@@ -493,7 +520,8 @@
     pickRow('chọn đồ', dialogRows(head, el => names.some(n => el.innerText.toLowerCase().includes(n))).map(o => {
       const name = names.find(n => o.text.toLowerCase().includes(n));
       const keep = /^keep|giữ|mantener|conservar/i.test(o.text);
-      return { ...o, name, keep, score: name ? CFG.itemScores[name] + (keep ? 0.5 : 0) : -1, why: keep ? '(giữ)' : '' };
+      const dump = keep && CFG.swapAwayItems.includes(name);       // below unknown items (-1): any swap beats keeping it
+      return { ...o, name, keep, score: dump ? -2 : name ? CFG.itemScores[name] + (keep ? 0.5 : 0) : -1, why: dump ? '(giữ — muốn bỏ)' : keep ? '(giữ)' : '' };
     }));
   }
 
@@ -577,9 +605,13 @@
   // ---------- overlay + HUD ----------
   const ov = document.createElement('canvas');
   ov.style.cssText = 'position:fixed;pointer-events:none;z-index:99999';
+  // Top-right dock stacking the control panel, the HUD line and the F6 catalog (CSS order keeps that order)
+  const dock = document.createElement('div');
+  dock.style.cssText = 'position:fixed;top:4px;right:4px;z-index:99999;display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-height:calc(100vh - 8px);pointer-events:none';
   const hud = document.createElement('div');
-  hud.style.cssText = 'position:fixed;top:4px;right:4px;z-index:99999;font:12px monospace;background:#000a;color:#7cf;padding:4px 6px;border-radius:4px;pointer-events:none';
-  document.body.append(ov, hud);
+  hud.style.cssText = 'order:2;font:12px monospace;background:#000a;color:#7cf;padding:4px 6px;border-radius:4px;pointer-events:none';
+  dock.append(hud);
+  document.body.append(ov, dock);
   function draw() {
     const r = canvas.getBoundingClientRect();
     Object.assign(ov.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
@@ -624,7 +656,7 @@
   // ---------- control panel: ▶ play N runs (0 = forever), ⏸ pause / resume, ■ stop ----------
   const RUNS_KEY = 'psbot.runs';
   const ctl = document.createElement('div');
-  ctl.style.cssText = 'position:fixed;top:4px;left:4px;z-index:99999;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
+  ctl.style.cssText = 'order:0;pointer-events:auto;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
   const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
   ctl.innerHTML = `
     <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot</div>
@@ -636,8 +668,9 @@
       <button data-ctl="pause" style="${btnCss};background:#fc3">⏸ Tạm dừng</button>
       <button data-ctl="stop" style="${btnCss};background:#f66">■ Dừng</button>
     </div>
+    <button data-ctl="moveset" style="${btnCss};background:#7cf">⚔ Moveset</button>
     <div data-ctl="status" style="color:#9ab"></div>`;
-  document.body.append(ctl);
+  dock.append(ctl);
   const $ = k => ctl.querySelector(`[data-ctl="${k}"]`);
   try { $('runs').value = localStorage.getItem(RUNS_KEY) || '5'; } catch { $('runs').value = '5'; }
   // Keep typing / clicks in the panel away from the game's keyboard and pointer handlers
@@ -666,6 +699,61 @@
       : !state.started && !state.on ? 'Chưa chạy — nhập số ván rồi bấm ▶'
       : `${state.on ? 'Đang chạy' : 'Tạm dừng'} · ván ${state.done + 1}${state.target ? `/${state.target}` : ' (vô hạn)'}`;
   }
+
+  // ---------- moveset popup: pick up to 4 priority moves per pokémon from its learnable list (moves.js) ----------
+  const MOVES = window.PSBotMoves || { moves: [], mons: {} };
+  const learnable = name => (MOVES.mons[name.toLowerCase()] || []).map(i => MOVES.moves[i]);
+  const currentMon = () => [...state.hudTexts].map(t => t.toLowerCase()).find(t => MOVES.mons[t]) || '';
+  const ms = document.createElement('div');
+  ms.style.cssText = 'order:1;pointer-events:auto;width:300px;max-width:calc(100vw - 8px);font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:none;flex-direction:column;gap:5px';
+  const inCss = 'font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px';
+  ms.innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-weight:bold;color:#7cf">Moveset (4 move ưu tiên)<span data-ms="close" style="cursor:pointer;color:#9ab">✕</span></div>
+    <div style="display:flex;gap:4px"><input data-ms="mon" list="psbot-mons" placeholder="Tên pokémon" style="${inCss};flex:1;min-width:0">
+      <button data-ms="cur" style="${btnCss};background:#9ab" title="Pokémon đang chơi">Hiện tại</button></div>
+    <datalist id="psbot-mons">${Object.keys(MOVES.mons).map(n => `<option value="${n.replace(/"/g, '&quot;')}">`).join('')}</datalist>
+    <div data-ms="slots" style="display:flex;flex-direction:column;gap:3px"></div>
+    <div style="display:flex;gap:4px">
+      <button data-ms="save" style="${btnCss};background:#4c4">Lưu</button>
+      <button data-ms="del" style="${btnCss};background:#f66">Xoá build</button></div>
+    <div data-ms="msg" style="color:#9ab"></div>
+    <div data-ms="list" style="color:#9ab;max-height:120px;overflow:auto"></div>`;
+  dock.append(ms);
+  ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click'].forEach(t => ms.addEventListener(t, e => e.stopPropagation()));
+  const $m = k => ms.querySelector(`[data-ms="${k}"]`);
+  const moveLabel = m => `${m.name} · ${m.cat === 'status' ? 'buff' : `${m.kind} ${m.dmg ?? '?'}dmg/${m.cd ?? '?'}s`}`;
+  function renderMoveset() {
+    const name = $m('mon').value.trim().toLowerCase(), list = learnable(name), build = CFG.builds[name] || [];
+    $m('slots').innerHTML = list.length ? [0, 1, 2, 3].map(i => `<label style="display:flex;gap:6px;align-items:center">#${i + 1}
+      <select data-slot style="${inCss};flex:1;min-width:0"><option value="">(trống)</option>${list.map((m, j) =>
+        `<option value="${m.name}" ${build[i] === m.name ? 'selected' : ''}>${j ? '' : '★ '}${moveLabel(m)}</option>`).join('')}</select></label>`).join('')
+      : `<div style="color:#f96">${name ? 'Không có trong pokedex' : 'Chọn pokémon'}</div>`;
+    const saved = Object.entries(CFG.builds);
+    $m('list').innerHTML = saved.length ? 'Đã lưu: ' + saved.map(([n, b]) => `<a data-load="${n}" style="color:#7cf;cursor:pointer;text-decoration:underline" title="${b.join(', ')}">${n}</a>`).join(', ') : 'Chưa có build nào';
+  }
+  function openMoveset() {
+    const show = ms.style.display === 'none';
+    ms.style.display = show ? 'flex' : 'none';
+    if (show) { if (!$m('mon').value) $m('mon').value = currentMon(); $m('msg').textContent = ''; renderMoveset(); }
+  }
+  $('moveset').onclick = openMoveset;
+  $m('close').onclick = openMoveset;
+  $m('mon').oninput = renderMoveset;
+  $m('cur').onclick = () => { $m('mon').value = currentMon(); $m('msg').textContent = currentMon() ? '' : 'Chưa thấy tên pokémon trên màn (vào trận trước)'; renderMoveset(); };
+  $m('save').onclick = () => {
+    const name = $m('mon').value.trim();
+    const moves = [...new Set([...ms.querySelectorAll('select[data-slot]')].map(s => s.value).filter(Boolean))];
+    if (!learnable(name).length || !moves.length) return void ($m('msg').textContent = 'Chọn pokémon và ít nhất 1 move');
+    window.PSBot.setBuild(name, moves);
+    $m('msg').textContent = `Đã lưu ${name}: ${moves.join(' > ')}`; renderMoveset();
+  };
+  $m('del').onclick = () => {
+    const name = $m('mon').value.trim();
+    if (!CFG.builds[name.toLowerCase()]) return;
+    window.PSBot.setBuild(name, []);
+    $m('msg').textContent = `Đã xoá build ${name}`; renderMoveset();
+  };
+  $m('list').onclick = e => { const a = e.target.closest('[data-load]'); if (a) { $m('mon').value = a.dataset.load; renderMoveset(); } };
 
   // ---------- catalog (F6): every world sprite type seen, with thumbnail + stats ----------
   const catalog = new Map();   // src -> { src, img, rect, w, h, max, frames, lastSeen, speed, prev }
@@ -728,14 +816,15 @@
   }
 
   const panel = document.createElement('div');
-  panel.style.cssText = 'position:fixed;top:30px;right:4px;width:380px;max-height:80vh;overflow:auto;z-index:99999;font:11px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;display:none';
-  document.body.append(panel);
+  panel.style.cssText = 'order:3;pointer-events:auto;width:380px;max-width:calc(100vw - 8px);min-height:0;flex:0 1 auto;overflow:auto;font:11px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;display:none';
+  dock.append(panel);
   const TAG_LABEL = { good: ['Tốt', '#4f4'], hazard: ['Nguy hiểm', '#f90'], rift: ['Rift', '#f4f'], wall: ['Vật cản', '#88f'], buff: ['Buff', '#ff0'], xp: ['Kinh nghiệm', '#0fc'], case: ['Vali (đứng 5s)', '#fa0'], safe: ['An toàn', '#9cf'] };
   function renderPanel() {
     if (panel.style.display === 'none') return;
     const now = performance.now();
     const esc = s => s.replace(/[&<>"]/g, ch => `&#${ch.charCodeAt(0)};`);
-    panel.innerHTML = `<div style="padding:6px;border-bottom:1px solid #345">Danh mục sprite (F6 đóng) · rê chuột = khoanh trên màn hình · <b>đậm</b> = đang có trên màn</div>` +
+    panel.innerHTML = `<div style="padding:6px;border-bottom:1px solid #345">Danh mục sprite (F6 đóng) · rê chuột = khoanh trên màn hình · <b>đậm</b> = đang có trên màn
+      <button data-export style="font:10px monospace;padding:1px 6px;margin-left:4px;background:#2a5;color:#000;border:1px solid #456;border-radius:3px;cursor:pointer" title="Tải data.js (nhãn + build) — chép đè vào thư mục extension">Xuất data.js</button></div>` +
       catalogRows().map(c => {
         const t = tagOf(c.src) || (/^(fill|stroke):/.test(c.src) && CFG.autoTelegraph && isTelegraph(c) ? 'hazard' : undefined);
         const live = now - c.lastSeen < 1500, enemy = CFG.enemyRe.test(c.src);
@@ -751,6 +840,7 @@
   }
   panel.addEventListener('pointerdown', e => e.stopPropagation());
   panel.addEventListener('click', e => {
+    if (e.target.closest('button[data-export]')) return void window.PSBot.exportConfig();
     const b = e.target.closest('button[data-src]');
     if (!b) return;
     if (b.dataset.tag) CFG.tags[b.dataset.src] = b.dataset.tag; else { delete CFG.tags[b.dataset.src]; delete CFG.tags[b.dataset.src.split('#')[0]]; }
@@ -812,6 +902,8 @@
     renderCtl();
     levelUp();
     dialogPick();
+    useItems(t);
+    swapSkills(t);
     autoRestart(t);
     if (state.on && t - lastResend > 400) {                    // re-assert held keys (game clears them on blur)
       lastResend = t;
@@ -859,7 +951,7 @@
   window.addEventListener('keydown', onKey, true);
 
   window.PSBot = {
-    CFG, state,
+    CFG, state, ctl,       // ctl = control panel (top-left); presets append their own lines to it
     // PSBot.play(5) = chơi 5 ván (0 = vô hạn) · PSBot.pause() / resume() / stop()
     play(n) { if (n !== undefined) $('runs').value = n; control.play(); },
     pause: () => control.pause(), resume: () => control.resume(), stop: () => control.stop(),
@@ -874,9 +966,10 @@
       try { copy(JSON.stringify(rows)); log('đã copy danh mục vào clipboard'); } catch {}
     },
     tags() { console.table(CFG.tags); },
-    // PSBot.setBuild('Kartana', ['Meteor Mash', 'Seed Bomb', 'Harden', 'Swords Dance'])
+    // PSBot.setBuild('Kartana', ['Meteor Mash', 'Seed Bomb', 'Harden', 'Swords Dance']) · [] = delete
     setBuild(name, moves) {
-      CFG.builds[name.toLowerCase()] = moves;
+      userBuilds[name.toLowerCase()] = moves;
+      if (moves.length) CFG.builds[name.toLowerCase()] = moves; else delete CFG.builds[name.toLowerCase()];
       try {
         const saved = JSON.parse(localStorage.getItem(BUILD_KEY) || '{}');
         saved[name.toLowerCase()] = moves;
@@ -885,11 +978,18 @@
       log('build', name, moves);
     },
     resetTags() { CFG.tags = {}; saveTags(); },
-    // Copies tags + builds as JSON so they can be baked into CFG in this file
+    // Downloads data.js (tags + builds set with setBuild) to drop into the extension folder, so every machine gets them
     exportConfig() {
       const json = JSON.stringify({ tags: CFG.tags, builds: CFG.builds }, null, 2);
-      try { copy(json); log('đã copy cấu hình vào clipboard'); } catch {}
-      console.log(json);
+      const src = '// Nhãn sprite + build đã đánh dấu, đi kèm extension để máy nào cài cũng có sẵn.\n' +
+        '// Tạo lại file này bằng nút "Xuất data.js" trong bảng F6 (hoặc PSBot.exportConfig()), rồi chép đè vào thư mục extension.\n' +
+        `window.PSBotData = ${json};\n`;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+      a.download = 'data.js';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      log(`đã xuất data.js: ${Object.keys(CFG.tags).length} nhãn, ${Object.keys(CFG.builds).length} build — chép đè vào thư mục extension`);
     },
     unload() {
       running = false; applyDir(null);
@@ -905,7 +1005,7 @@
       XMLHttpRequest.prototype.open = XO; XMLHttpRequest.prototype.send = XS; WebSocket.prototype.send = WS;
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener('pointerdown', onClick, true);
-      ov.remove(); hud.remove(); panel.remove(); ctl.remove();
+      ov.remove(); dock.remove();
       delete window.PSBot;
       log('unloaded');
     },

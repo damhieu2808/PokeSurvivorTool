@@ -61,10 +61,15 @@
     return h > 0.01 ? Math.round(total() / h) : 0;
   };
 
-  // ---------- HUD ----------
+  // ---------- HUD (a line in bot.js's control panel, top-left; own corner box if there is none) ----------
   const hud = document.createElement('div');
-  hud.style.cssText = 'position:fixed;bottom:4px;right:4px;z-index:99999;font:12px monospace;background:#000b;color:#fc3;padding:4px 6px;border-radius:4px;pointer-events:none';
-  document.body.append(hud);
+  if (window.PSBot.ctl) {
+    hud.style.cssText = 'color:#fc3;border-top:1px solid #345;padding-top:4px';
+    window.PSBot.ctl.append(hud);
+  } else {
+    hud.style.cssText = 'position:fixed;bottom:4px;right:4px;z-index:99999;font:12px monospace;background:#000b;color:#fc3;padding:4px 6px;border-radius:4px;pointer-events:none';
+    document.body.append(hud);
+  }
   const render = () => {
     const last = data.runs[data.runs.length - 1];
     hud.textContent = `farm: ${total()} xu · ${data.runs.length} trận · ${perHour()} xu/giờ${last ? ` · trận cuối +${last.coins}` : ''}`;

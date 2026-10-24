@@ -3,10 +3,22 @@
   "name": "PokeSurvivor Bot",
   "version": "1.0.0",
   "description": "Auto-play bot and coin-farming preset for pokesurvivor.com (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://pokesurvivor.com/*"],
-      "js": ["bot.js", "farmMoney.js"],
+      "js": ["data.js", "moves.js", "bot.js", "farmMoney.js"],
       "run_at": "document_idle",
       "world": "MAIN"
     }
