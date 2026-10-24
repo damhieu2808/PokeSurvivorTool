@@ -683,6 +683,7 @@
     </div>
     <button data-ctl="moveset" style="${btnCss};background:#7cf">⚔ Moveset</button>
     <div data-ctl="status" style="color:#9ab"></div>
+    <a href="${REPO}" target="_blank" rel="noopener" title="Repo gốc — bấm để mở GitHub" style="order:1;border-top:1px solid #345;padding-top:4px;color:#9ab;text-decoration:none">⭐ Tác giả <b style="color:#7cf">damhieu2808</b> · github.com/damhieu2808/PokeSurvivorTool</a>
     <a data-ctl="update" href="${REPO}" target="_blank" rel="noopener" style="display:none;color:#000;background:#fc3;border-radius:4px;padding:3px 6px;text-decoration:none;font-weight:bold"></a>`;
   dock.append(ctl);
   const $ = k => ctl.querySelector(`[data-ctl="${k}"]`);
