@@ -20,6 +20,9 @@
   // Loaded by the extension at document_idle the game canvas may not exist yet: retry until it does
   if (!document.getElementById('game')) return void setTimeout(start, 500);
   if (window.PSBot) window.PSBot.unload();
+  // Keep VERSION equal to "version" in manifest.json: a higher version on GitHub shows the update notice
+  const VERSION = '1.1.0';
+  const REPO = 'https://github.com/damhieu2808/PokeSurvivorTool';
 
   const CFG = {
     // Each frame one target is chosen: rift > good item (within goodRange) > nearest enemy.
@@ -669,7 +672,7 @@
   ctl.style.cssText = 'order:0;pointer-events:auto;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
   const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
   ctl.innerHTML = `
-    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot <a href="https://github.com/damhieu2808/PokeSurvivorTool" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></div>
+    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot v${VERSION} <a href="${REPO}" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></div>
     <label style="display:flex;align-items:center;gap:6px">Số ván
       <input data-ctl="runs" type="number" min="0" step="1" style="width:60px;font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px">
       <span style="color:#9ab">0 = vô hạn</span></label>
@@ -679,7 +682,8 @@
       <button data-ctl="stop" style="${btnCss};background:#f66">■ Dừng</button>
     </div>
     <button data-ctl="moveset" style="${btnCss};background:#7cf">⚔ Moveset</button>
-    <div data-ctl="status" style="color:#9ab"></div>`;
+    <div data-ctl="status" style="color:#9ab"></div>
+    <a data-ctl="update" href="${REPO}" target="_blank" rel="noopener" style="display:none;color:#000;background:#fc3;border-radius:4px;padding:3px 6px;text-decoration:none;font-weight:bold"></a>`;
   dock.append(ctl);
   const $ = k => ctl.querySelector(`[data-ctl="${k}"]`);
   try { $('runs').value = localStorage.getItem(RUNS_KEY) || '5'; } catch { $('runs').value = '5'; }
@@ -697,6 +701,21 @@
     resume() { state.on = true; log('tiếp tục'); },
     stop() { Object.assign(state, { on: false, target: 0, done: 0, started: false }); applyDir(null); log('dừng'); },
   };
+  // Update check: compare with the manifest on the original repo (copies of the tool point here too)
+  const newer = (a, b) => { const x = a.split('.').map(Number), y = b.split('.').map(Number); for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); return false; };
+  async function checkUpdate() {
+    try {
+      const r = await fetch('https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/manifest.json', { cache: 'no-store' });
+      const latest = (await r.json()).version;
+      if (!latest || !newer(latest, VERSION)) return;
+      $('update').style.display = 'block';
+      $('update').textContent = `⬆ Có bản mới v${latest} (đang dùng v${VERSION}) → github.com/damhieu2808/PokeSurvivorTool`;
+      log(`có bản mới v${latest} — tải tại ${REPO}`);
+    } catch {}
+  }
+  checkUpdate();
+  const updateTimer = setInterval(checkUpdate, 6 * 3600000);
+
   $('play').onclick = () => control.play();
   $('pause').onclick = () => (state.on ? control.pause() : control.resume());
   $('stop').onclick = () => control.stop();
@@ -1002,7 +1021,7 @@
       log(`đã xuất data.js: ${Object.keys(CFG.tags).length} nhãn, ${Object.keys(CFG.builds).length} build — chép đè vào thư mục extension`);
     },
     unload() {
-      running = false; applyDir(null);
+      running = false; applyDir(null); clearInterval(updateTimer);
       P.drawImage = origDraw; P.arc = origArc; P.fillText = origText;
       Object.assign(P, pathOrig);
       if (bgWorker) {
@@ -1020,5 +1039,5 @@
       log('unloaded');
     },
   };
-  log('loaded — F8 bật/tắt, F9 overlay, PSBot.sources() để xem sprite · tác giả damhieu2808 · https://github.com/damhieu2808/PokeSurvivorTool');
+  log(`loaded — F8 bật/tắt, F9 overlay, PSBot.sources() để xem sprite · v${VERSION} · tác giả damhieu2808 · ${REPO}`);
 })();

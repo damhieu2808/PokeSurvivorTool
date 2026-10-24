@@ -14,7 +14,7 @@ Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới 
 4. Bấm **Load unpacked** và chọn thư mục `PokeSurvivorTool` vừa tải (thư mục có file `manifest.json`).
 5. Mở [pokesurvivor.com](https://pokesurvivor.com). Bảng **PokeSurvivor Bot** hiện ở góc phải trên là đã chạy.
 
-**Cập nhật bản mới:** `git pull` (hoặc tải lại ZIP), rồi vào `chrome://extensions` bấm **↻ Reload** ở extension và tải lại trang game.
+**Cập nhật bản mới:** khi có bản mới, bảng điều khiển hiện dòng vàng **⬆ Có bản mới …** (bot tự kiểm tra repo gốc lúc khởi động và mỗi 6 giờ). Khi đó `git pull` (hoặc tải lại ZIP), rồi vào `chrome://extensions` bấm **↻ Reload** ở extension và tải lại trang game. Phiên bản đang dùng hiện ở tiêu đề bảng điều khiển.
 
 ## Sử dụng
 
@@ -74,6 +74,10 @@ Thứ tự ưu tiên khi tải: mặc định trong code < `data.js` < dữ li�
 | `PSBot.CFG.<tên> = …` | Chỉnh tạm cấu hình, ví dụ `PSBot.CFG.swapSkills = false`, `PSBot.CFG.useItems = false` |
 
 Toàn bộ cấu hình kèm chú thích nằm ở đầu [bot.js](bot.js) (`CFG`).
+
+## Phát hành bản mới (dành cho tác giả)
+
+Tăng số phiên bản ở **cả hai** chỗ, giống nhau: `"version"` trong `manifest.json` và `VERSION` ở đầu `bot.js`, rồi commit + push lên `main`. Mọi người đang dùng bản cũ sẽ thấy thông báo cập nhật trong vòng vài phút đến vài giờ.
 
 ## Cập nhật danh sách move
 
