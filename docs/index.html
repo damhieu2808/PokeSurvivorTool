@@ -4,49 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cài PokeSurvivor Bot</title>
-<meta name="description" content="Cài PokeSurvivor Bot trên điện thoại và máy tính — tác giả damhieu2808">
+<meta name="description" content="Cài PokeSurvivor Bot (Chrome extension) — tác giả damhieu2808">
 <link rel="icon" href="https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/icons/icon32.png">
 <style>
   :root {
     --bg: #f6f4ee; --card: #fff; --ink: #1d232b; --muted: #5d6773; --line: #e2ddd2;
-    --accent: #e0a800; --accent-ink: #1d232b; --ok: #2f9e44; --code: #f0ede4;
+    --accent: #e0a800; --accent-ink: #1d232b; --code: #f0ede4;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #11151b; --card: #1a2029; --ink: #e8ecf1; --muted: #9aa6b4; --line: #2b3440;
-      --accent: #ffcc33; --accent-ink: #11151b; --ok: #51cf66; --code: #0d1117;
+      --accent: #ffcc33; --accent-ink: #11151b; --code: #0d1117;
     }
   }
   :root[data-theme="dark"] {
     --bg: #11151b; --card: #1a2029; --ink: #e8ecf1; --muted: #9aa6b4; --line: #2b3440;
-    --accent: #ffcc33; --accent-ink: #11151b; --ok: #51cf66; --code: #0d1117;
+    --accent: #ffcc33; --accent-ink: #11151b; --code: #0d1117;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
-  header { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; }
+  main { max-width: 600px; margin: 0 auto; padding: 24px 16px 48px; }
+  header { display: flex; gap: 14px; align-items: center; margin-bottom: 20px; }
   header img { width: 56px; height: 56px; border-radius: 14px; }
   h1 { font-size: 24px; margin: 0; line-height: 1.2; }
   .by { color: var(--muted); font-size: 14px; }
   .by a { color: inherit; }
-  .tabs { display: flex; gap: 6px; margin: 20px 0 12px; flex-wrap: wrap; }
-  .tabs button { flex: 1; min-width: 90px; font: inherit; font-weight: 600; padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
-  .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-  section { display: none; }
-  section.on { display: block; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
-  .card h2 { font-size: 17px; margin: 0 0 4px; }
-  .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--ok); border: 1px solid var(--ok); border-radius: 99px; padding: 0 8px; margin-left: 6px; vertical-align: 2px; }
-  .note { color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
-  ol { padding-left: 22px; margin: 8px 0; }
-  li { margin: 6px 0; }
-  .btn { display: block; width: 100%; text-align: center; font: inherit; font-weight: 700; font-size: 17px; padding: 14px; border-radius: 12px; border: 0; background: var(--accent); color: var(--accent-ink); text-decoration: none; cursor: pointer; margin: 10px 0 4px; }
-  .btn.done { background: var(--ok); color: #fff; }
-  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 600; font-size: 15px; padding: 10px; }
-  code, textarea { font: 13px/1.4 ui-monospace, Consolas, monospace; }
-  textarea { width: 100%; height: 76px; resize: none; background: var(--code); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px; word-break: break-all; }
-  b.k { background: var(--code); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; font-weight: 600; }
-  .drag { display: inline-block; padding: 8px 14px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none; cursor: grab; }
+  .card h2 { font-size: 17px; margin: 0 0 8px; }
+  ol { padding-left: 22px; margin: 0; }
+  li { margin: 8px 0; }
+  code { font: 14px ui-monospace, Consolas, monospace; background: var(--code); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; }
+  .btn { display: block; text-align: center; font-weight: 700; font-size: 17px; padding: 14px; border-radius: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; margin-bottom: 14px; }
+  .muted { color: var(--muted); margin: 0; }
   footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 28px; }
   footer a { color: inherit; }
 </style>
@@ -56,123 +45,29 @@
   <header>
     <img src="https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/icons/icon128.png" alt="">
     <div>
-      <h1>Cài PokeSurvivor Bot</h1>
-      <div class="by">Tác giả <a href="https://github.com/damhieu2808/PokeSurvivorTool">damhieu2808</a> · bot tự chơi cho pokesurvivor.com</div>
+      <h1>PokeSurvivor Bot</h1>
+      <div class="by">Miễn phí · tác giả <a href="https://github.com/damhieu2808/PokeSurvivorTool">damhieu2808</a></div>
     </div>
   </header>
 
-  <div class="tabs" role="tablist">
-    <button role="tab" data-tab="ios">iPhone / iPad</button>
-    <button role="tab" data-tab="android">Android</button>
-    <button role="tab" data-tab="pc">Máy tính</button>
-  </div>
-
-  <!-- iOS -->
-  <section data-tab="ios">
-    <div class="card">
-      <h2>Cách 1: Tự chạy mỗi lần vào game <span class="tag">khuyên dùng</span></h2>
-      <p class="note">Cài 1 lần, sau đó chỉ cần mở pokesurvivor.com.</p>
-      <ol>
-        <li>Cài app miễn phí <a href="https://apps.apple.com/app/userscripts/id1463298887"><b>Userscripts</b></a> từ App Store.</li>
-        <li>Vào <b>Cài đặt → Safari → Tiện ích mở rộng → Userscripts</b>: bật lên, mục <i>Quyền</i> chọn <b>Cho phép</b> (hoặc cho phép trên pokesurvivor.com).</li>
-        <li>Mở trang này bằng <b>Safari</b> và bấm nút dưới, rồi bấm biểu tượng <b>Userscripts</b> (ô chữ <b class="k">&lt;/&gt;</b> hoặc <b class="k">ᴀA</b> trên thanh địa chỉ) → <b>Install</b>.</li>
-      </ol>
-      <a class="btn" href="https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/psbot.user.js">Cài bot (userscript)</a>
-      <p class="note">Xong: mở <a href="https://pokesurvivor.com">pokesurvivor.com</a>, bảng PokeSurvivor Bot hiện ở góc phải trên.</p>
-    </div>
-    <div class="card">
-      <h2>Cách 2: Dấu trang (không cần cài app)</h2>
-      <ol>
-        <li>Bấm nút để copy code:</li>
-      </ol>
-      <button class="btn copy">📋 Copy code</button>
-      <ol start="2">
-        <li>Trên trang bất kỳ: <b>Chia sẻ → Thêm dấu trang → Lưu</b>.</li>
-        <li><b>Dấu trang → Sửa</b> → chọn dấu trang vừa tạo: tên <b>PokeSurvivor Bot</b>, ô địa chỉ <b>xoá hết rồi dán</b>.</li>
-        <li>Mỗi lần chơi: mở pokesurvivor.com → <b>Dấu trang → PokeSurvivor Bot</b>.</li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Android -->
-  <section data-tab="android">
-    <div class="card">
-      <h2>Cách 1: Tự chạy mỗi lần vào game <span class="tag">khuyên dùng</span></h2>
-      <p class="note">Dùng trình duyệt Firefox, cài 1 lần, sau đó chỉ cần mở pokesurvivor.com.</p>
-      <ol>
-        <li>Cài <a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox"><b>Firefox</b></a> từ CH Play.</li>
-        <li>Trong Firefox: <b>⋮ → Tiện ích mở rộng</b>, tìm <b>Tampermonkey</b> → <b>+</b> → <b>Thêm</b>.</li>
-        <li>Mở trang này bằng <b>Firefox</b> và bấm nút dưới → Tampermonkey hiện trang cài → <b>Install / Cài đặt</b>.</li>
-      </ol>
-      <a class="btn" href="https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/psbot.user.js">Cài bot (userscript)</a>
-      <p class="note">Xong: mở <a href="https://pokesurvivor.com">pokesurvivor.com</a> trong Firefox, bảng PokeSurvivor Bot hiện ở góc phải trên.</p>
-    </div>
-    <div class="card">
-      <h2>Cách 2: Dấu trang trên Chrome (không cần cài gì)</h2>
-      <ol>
-        <li>Bấm nút để copy code:</li>
-      </ol>
-      <button class="btn copy">📋 Copy code</button>
-      <ol start="2">
-        <li>Trên trang bất kỳ: <b>⋮ → ☆</b> để tạo dấu trang.</li>
-        <li><b>⋮ → Dấu trang</b>, giữ dấu trang vừa tạo → <b>Chỉnh sửa</b>: tên <b>PokeSurvivor Bot</b>, ô URL <b>xoá hết rồi dán</b>.</li>
-        <li>Mỗi lần chơi: mở pokesurvivor.com, <b>gõ <code>PokeSurvivor Bot</code> lên thanh địa chỉ</b> rồi chọn dòng dấu trang hiện ra. (Bấm từ danh sách dấu trang sẽ không chạy.)</li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- PC -->
-  <section data-tab="pc">
-    <div class="card">
-      <h2>Chrome extension <span class="tag">đầy đủ nhất</span></h2>
-      <ol>
-        <li><a href="https://github.com/damhieu2808/PokeSurvivorTool/archive/refs/heads/main.zip">Tải ZIP</a> và giải nén.</li>
-        <li>Mở <b>chrome://extensions</b>, bật <b>Developer mode</b>.</li>
-        <li><b>Load unpacked</b> → chọn thư mục vừa giải nén (có file <code>manifest.json</code>).</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h2>Hoặc: kéo nút này lên thanh dấu trang</h2>
-      <p class="note">Không cần cài. Mở pokesurvivor.com rồi bấm dấu trang đó.</p>
-      <a class="drag" id="drag" href="#">PokeSurvivor Bot</a>
-    </div>
-  </section>
+  <a class="btn" href="https://github.com/damhieu2808/PokeSurvivorTool/archive/refs/heads/main.zip">Tải bot (ZIP)</a>
 
   <div class="card">
-    <h2>Dùng thế nào?</h2>
-    <p class="note" style="margin:0">Nhập số ván → <b>▶ Chạy</b>. <b>⚔ Moveset</b> chọn 4 move ưu tiên cho từng pokémon. Nút <b>–</b> thu gọn bảng. Bot luôn tải bản mới nhất, không cần cài lại khi có cập nhật.</p>
-    <a class="btn ghost" href="https://github.com/damhieu2808/PokeSurvivorTool#readme">Hướng dẫn đầy đủ trên GitHub</a>
+    <h2>Cài đặt (Chrome trên máy tính)</h2>
+    <ol>
+      <li>Giải nén file ZIP vừa tải.</li>
+      <li>Mở <code>chrome://extensions</code>, bật <b>Developer mode</b>.</li>
+      <li>Bấm <b>Load unpacked</b>, chọn thư mục vừa giải nén.</li>
+      <li>Mở <a href="https://pokesurvivor.com">pokesurvivor.com</a>, nhập số ván rồi bấm <b>▶ Chạy</b>.</li>
+    </ol>
   </div>
 
-  <textarea id="code" readonly aria-label="Code dấu trang" style="position:absolute;left:-9999px"></textarea>
+  <div class="card">
+    <h2>Cần cài hộ?</h2>
+    <p class="muted">Liên hệ tác giả <a href="https://github.com/damhieu2808">damhieu2808</a>.</p>
+  </div>
 
-  <footer>PokeSurvivor Bot © damhieu2808 · <a href="https://github.com/damhieu2808/PokeSurvivorTool">github.com/damhieu2808/PokeSurvivorTool</a> · MIT License</footer>
+  <footer>PokeSurvivor Bot © damhieu2808 · <a href="https://github.com/damhieu2808/PokeSurvivorTool">GitHub</a> · MIT License</footer>
 </main>
-<script>
-  const BOOKMARKLET = "javascript:(()=>{fetch('https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/loader.js?t='+Date.now()).then(r=>r.text()).then(t=>{const s=document.createElement('script');s.textContent=t;document.body.append(s)}).catch(e=>alert('PSBot: '+e))})()";
-  document.getElementById('drag').href = BOOKMARKLET;
-  document.getElementById('drag').onclick = e => { e.preventDefault(); alert('Kéo nút này lên thanh dấu trang, đừng bấm.'); };
-  const area = document.getElementById('code');
-  area.value = BOOKMARKLET;
-
-  async function copy(btn) {
-    let ok = false;
-    try { await navigator.clipboard.writeText(BOOKMARKLET); ok = true; } catch {}
-    if (!ok) { area.style.position = 'static'; area.focus(); area.select(); area.setSelectionRange(0, 1e6); try { ok = document.execCommand('copy'); } catch {} }
-    btn.textContent = ok ? '✓ Đã copy — giờ tạo dấu trang' : 'Không copy được — chọn hết ô dưới rồi copy';
-    btn.classList.toggle('done', ok);
-  }
-  document.querySelectorAll('.copy').forEach(b => b.onclick = () => copy(b));
-
-  // Tabs: open the one for this device
-  const tabs = document.querySelectorAll('[role=tab]');
-  function show(name) {
-    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab === name));
-    document.querySelectorAll('section[data-tab]').forEach(s => s.classList.toggle('on', s.dataset.tab === name));
-  }
-  tabs.forEach(t => t.onclick = () => show(t.dataset.tab));
-  const ua = navigator.userAgent;
-  show(/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'ios' : /Android/.test(ua) ? 'android' : 'pc');
-</script>
 </body>
 </html>

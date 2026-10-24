@@ -14,7 +14,7 @@ Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới 
 2. Mở Chrome (hoặc Edge, Brave…), vào `chrome://extensions`.
 3. Bật **Developer mode** (góc phải trên).
 4. Bấm **Load unpacked** và chọn thư mục `PokeSurvivorTool` vừa tải (thư mục có file `manifest.json`).
-5. Mở [pokesurvivor.com](https://pokesurvivor.com). Bảng **PokeSurvivor Bot** hiện ở góc phải trên là đã chạy.
+5. Mở [pokesurvivor.com](https://pokesurvivor.com). Bảng **PokeSurvivor Bot** hiện ở góc trái trên là đã chạy.
 
 **Cập nhật bản mới:** khi có bản mới, bảng điều khiển hiện dòng vàng **⬆ Có bản mới …** (bot tự kiểm tra repo gốc lúc khởi động và mỗi 6 giờ). Khi đó `git pull` (hoặc tải lại ZIP), rồi vào `chrome://extensions` bấm **↻ Reload** ở extension và tải lại trang game. Phiên bản đang dùng hiện ở tiêu đề bảng điều khiển.
 
@@ -47,13 +47,13 @@ Trình duyệt điện thoại không cài được Chrome extension, nên có t
 - iOS Safari: mở Dấu trang và bấm **PokeSurvivor Bot**;
 - Chrome Android: gõ `PokeSurvivor Bot` lên thanh địa chỉ và chọn dòng dấu trang hiện ra (bấm từ danh sách dấu trang không chạy được trên Chrome Android).
 
-Bảng điều khiển hiện ở góc phải trên. Tải lại trang thì phải bấm dấu trang lại. Nút **–** trên tiêu đề thu gọn bảng cho đỡ che màn hình; **Overlay** và **Danh mục** thay cho F9 / F6.
+Bảng điều khiển hiện ở góc trái trên. Tải lại trang thì phải bấm dấu trang lại. Nút **–** trên tiêu đề thu gọn bảng cho đỡ che màn hình; **Overlay** và **Danh mục** thay cho F9 / F6.
 
 > Trên PC cũng dùng được bookmarklet này (thay cho extension), bấm trên thanh dấu trang.
 
 ## Sử dụng
 
-### Bảng điều khiển (góc phải trên)
+### Bảng điều khiển (góc trái trên)
 
 | Nút | Ý nghĩa |
 |---|---|

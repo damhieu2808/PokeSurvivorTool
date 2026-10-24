@@ -545,7 +545,7 @@
     const leaves = [...document.querySelectorAll('body *')].filter(e => !e.children.length && visible(e));
     if (leaves.some(e => /only hold one|An item!|Bond!|to bond/i.test(e.innerText || ''))) return;
     // Only buttons actually on top at their centre (not faded out / covered by the game canvas);
-    // the bot's own top-right dock is looked through, so it can't hide the game's Play button
+    // the bot's own top-left dock is looked through, so it can't hide the game's Play button
     const onTop = b => {
       const r = b.getBoundingClientRect();
       const t = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find(e => !dock.contains(e));
@@ -618,9 +618,9 @@
   // ---------- overlay + HUD ----------
   const ov = document.createElement('canvas');
   ov.style.cssText = 'position:fixed;pointer-events:none;z-index:99999';
-  // Top-right dock stacking the control panel, the HUD line and the F6 catalog (CSS order keeps that order)
+  // Top-left dock (60px down: the pokémon's HP bar sits in that corner) stacking the control panel, the HUD line and the F6 catalog (CSS order keeps that order)
   const dock = document.createElement('div');
-  dock.style.cssText = 'position:fixed;top:4px;right:4px;z-index:99999;display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-height:calc(100vh - 8px);pointer-events:none';
+  dock.style.cssText = 'position:fixed;top:60px;left:0;z-index:99999;display:flex;flex-direction:column;align-items:flex-start;gap:4px;max-height:calc(100vh - 44px);pointer-events:none';
   const hud = document.createElement('div');
   hud.style.cssText = 'order:2;font:12px monospace;background:#000a;color:#7cf;padding:4px 6px;border-radius:4px;pointer-events:none';
   dock.append(hud);
