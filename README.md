@@ -16,6 +16,32 @@ Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới 
 
 **Cập nhật bản mới:** khi có bản mới, bảng điều khiển hiện dòng vàng **⬆ Có bản mới …** (bot tự kiểm tra repo gốc lúc khởi động và mỗi 6 giờ). Khi đó `git pull` (hoặc tải lại ZIP), rồi vào `chrome://extensions` bấm **↻ Reload** ở extension và tải lại trang game. Phiên bản đang dùng hiện ở tiêu đề bảng điều khiển.
 
+## Dùng trên điện thoại (Android / iOS) — bookmarklet
+
+Trình duyệt điện thoại không cài được Chrome extension, nên dùng **bookmarklet**: một dấu trang chứa đoạn code, bấm vào là bot được tải thẳng từ repo này (luôn là bản mới nhất) và chạy trên trang game.
+
+**Tạo dấu trang (làm 1 lần):**
+
+1. Copy nguyên dòng dưới đây:
+
+   ```
+   javascript:(()=>{fetch('https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/loader.js?t='+Date.now()).then(r=>r.text()).then(t=>{const s=document.createElement('script');s.textContent=t;document.body.append(s)}).catch(e=>alert('PSBot: '+e))})()
+   ```
+
+2. Tạo một dấu trang bất kỳ (ví dụ đánh dấu chính trang này), rồi **sửa** dấu trang đó:
+   - **Tên:** `PokeSurvivor Bot`
+   - **URL / địa chỉ:** xoá hết, dán dòng vừa copy.
+   - iOS Safari: biểu tượng Chia sẻ → *Thêm dấu trang*, sau đó vào Dấu trang → *Sửa*.
+   - Chrome Android: ⋮ → ☆, rồi ⋮ → *Dấu trang* → giữ dấu trang → *Chỉnh sửa*.
+
+**Mỗi lần chơi:** mở [pokesurvivor.com](https://pokesurvivor.com), rồi
+- iOS Safari: mở Dấu trang và bấm **PokeSurvivor Bot**;
+- Chrome Android: gõ `PokeSurvivor Bot` lên thanh địa chỉ và chọn dòng dấu trang hiện ra (bấm từ danh sách dấu trang không chạy được trên Chrome Android).
+
+Bảng điều khiển hiện ở góc phải trên. Tải lại trang thì phải bấm dấu trang lại. Nút **–** trên tiêu đề thu gọn bảng cho đỡ che màn hình; **Overlay** và **Danh mục** thay cho F9 / F6.
+
+> Trên PC cũng dùng được bookmarklet này (thay cho extension), bấm trên thanh dấu trang.
+
 ## Sử dụng
 
 ### Bảng điều khiển (góc phải trên)
@@ -42,6 +68,8 @@ Bấm **⚔ Moveset**, gõ tên pokémon (hoặc bấm **Hiện tại** khi đan
 | **F7** | Chế độ gắn nhãn bằng click: click vật thể rồi bấm `1` tốt · `2` nguy hiểm · `3` rift · `4` vật cản · `5` buff · `6` kinh nghiệm · `7` vali · `0` xoá |
 | **F8** | Bật / tắt bot |
 | **F9** | Bật / tắt lớp vẽ debug |
+
+Trên điện thoại không có phím F: dùng nút **Overlay** (F9), **Danh mục** (F6) và **▶ Chạy / ⏸ Tạm dừng** (F8) trên bảng; nút **–** thu gọn bảng.
 
 Nhãn cho bot biết vật nào nên nhặt, vật nào phải né.
 
@@ -109,3 +137,4 @@ Tool do **damhieu2808** viết, phát hành theo giấy phép [MIT](LICENSE): b�
 | `moves.js` | Danh sách move của từng pokémon (sinh bởi `crawl-moves.js`) |
 | `crawl-moves.js` | Script tải lại `moves.js` từ wiki |
 | `icons/` | Icon extension |
+| `loader.js` | Nạp bot từ GitHub cho bookmarklet (điện thoại) |

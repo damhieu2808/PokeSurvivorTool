@@ -21,7 +21,7 @@
   if (!document.getElementById('game')) return void setTimeout(start, 500);
   if (window.PSBot) window.PSBot.unload();
   // Keep VERSION equal to "version" in manifest.json: a higher version on GitHub shows the update notice
-  const VERSION = '1.1.0';
+  const VERSION = '1.2.0';
   const REPO = 'https://github.com/damhieu2808/PokeSurvivorTool';
 
   const CFG = {
@@ -669,10 +669,13 @@
   // ---------- control panel: ▶ play N runs (0 = forever), ⏸ pause / resume, ■ stop ----------
   const RUNS_KEY = 'psbot.runs';
   const ctl = document.createElement('div');
+  ctl.dataset.psbotCtl = '';
   ctl.style.cssText = 'order:0;pointer-events:auto;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
   const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
   ctl.innerHTML = `
-    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot v${VERSION} <a href="${REPO}" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></div>
+    <div style="display:flex;align-items:center;gap:6px;font-weight:bold;color:#7cf"><span style="flex:1">PokeSurvivor Bot v${VERSION} <a href="${REPO}" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></span>
+      <button data-ctl="min" style="${btnCss};background:#9ab;padding:0 8px" title="Thu gọn / mở rộng">–</button></div>
+    <style>[data-psbot-ctl][data-min] > :not(:first-child) { display: none !important }</style>
     <label style="display:flex;align-items:center;gap:6px">Số ván
       <input data-ctl="runs" type="number" min="0" step="1" style="width:60px;font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px">
       <span style="color:#9ab">0 = vô hạn</span></label>
@@ -681,13 +684,29 @@
       <button data-ctl="pause" style="${btnCss};background:#fc3">⏸ Tạm dừng</button>
       <button data-ctl="stop" style="${btnCss};background:#f66">■ Dừng</button>
     </div>
-    <button data-ctl="moveset" style="${btnCss};background:#7cf">⚔ Moveset</button>
+    <div style="display:flex;gap:4px">
+      <button data-ctl="moveset" style="${btnCss};background:#7cf;flex:1">⚔ Moveset</button>
+      <button data-ctl="overlay" style="${btnCss};background:#9ab" title="Lớp vẽ debug (F9)">Overlay</button>
+      <button data-ctl="catalog" style="${btnCss};background:#9ab" title="Danh mục sprite (F6)">Danh mục</button>
+    </div>
     <div data-ctl="status" style="color:#9ab"></div>
     <a href="${REPO}" target="_blank" rel="noopener" title="Repo gốc — bấm để mở GitHub" style="order:1;border-top:1px solid #345;padding-top:4px;color:#9ab;text-decoration:none">⭐ Tác giả <b style="color:#7cf">damhieu2808</b> · github.com/damhieu2808/PokeSurvivorTool</a>
     <a data-ctl="update" href="${REPO}" target="_blank" rel="noopener" style="display:none;color:#000;background:#fc3;border-radius:4px;padding:3px 6px;text-decoration:none;font-weight:bold"></a>`;
   dock.append(ctl);
   const $ = k => ctl.querySelector(`[data-ctl="${k}"]`);
   try { $('runs').value = localStorage.getItem(RUNS_KEY) || '5'; } catch { $('runs').value = '5'; }
+  // Collapse to the title row (small screens); the <style> above hides every other row, the farm line included
+  const MIN_KEY = 'psbot.min';
+  const setMin = min => {
+    if (min) ctl.dataset.min = ''; else delete ctl.dataset.min;
+    $('min').textContent = min ? '+' : '–';
+    try { localStorage.setItem(MIN_KEY, min ? '1' : ''); } catch {}
+  };
+  try { setMin(!!localStorage.getItem(MIN_KEY)); } catch {}
+  $('min').onclick = () => setMin(!('min' in ctl.dataset));
+  // Buttons for the F-key toggles (no function keys on phones)
+  $('overlay').onclick = () => { state.debug = !state.debug; };
+  $('catalog').onclick = () => toggleCatalog();
   // Keep typing / clicks in the panel away from the game's keyboard and pointer handlers
   ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click'].forEach(t => ctl.addEventListener(t, e => e.stopPropagation()));
 
@@ -786,6 +805,7 @@
   $m('list').onclick = e => { const a = e.target.closest('[data-load]'); if (a) { $m('mon').value = a.dataset.load; renderMoveset(); } };
 
   // ---------- catalog (F6): every world sprite type seen, with thumbnail + stats ----------
+  function toggleCatalog() { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; renderPanel(); }
   const catalog = new Map();   // src -> { src, img, rect, w, h, max, frames, lastSeen, speed, prev }
   function collect(frame) {
     const now = performance.now();
@@ -976,7 +996,7 @@
     }
     if (e.code === 'F8') { state.on = !state.on; if (!state.on) applyDir(null); log('bot', state.on ? 'ON' : 'OFF'); e.preventDefault(); }
     if (e.code === 'F9') { state.debug = !state.debug; e.preventDefault(); }
-    if (e.code === 'F6') { panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; renderPanel(); e.preventDefault(); }
+    if (e.code === 'F6') { toggleCatalog(); e.preventDefault(); }
   };
   window.addEventListener('keydown', onKey, true);
 
