@@ -4,6 +4,8 @@ Tác giả: **[damhieu2808](https://github.com/damhieu2808)** · Repo gốc: htt
 
 Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới dạng Chrome extension: tự di chuyển, né, nhặt đồ, chọn skill khi lên cấp theo moveset bạn đặt, tự dùng vật phẩm và tự vào ván mới.
 
+**👉 Trang cài đặt (điện thoại + máy tính, có nút cài 1 chạm): https://damhieu2808.github.io/PokeSurvivorTool/**
+
 ## Cài đặt
 
 1. Tải code về, một trong hai cách:
@@ -16,9 +18,16 @@ Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới 
 
 **Cập nhật bản mới:** khi có bản mới, bảng điều khiển hiện dòng vàng **⬆ Có bản mới …** (bot tự kiểm tra repo gốc lúc khởi động và mỗi 6 giờ). Khi đó `git pull` (hoặc tải lại ZIP), rồi vào `chrome://extensions` bấm **↻ Reload** ở extension và tải lại trang game. Phiên bản đang dùng hiện ở tiêu đề bảng điều khiển.
 
-## Dùng trên điện thoại (Android / iOS) — bookmarklet
+## Dùng trên điện thoại (Android / iOS)
 
-Trình duyệt điện thoại không cài được Chrome extension, nên dùng **bookmarklet**: một dấu trang chứa đoạn code, bấm vào là bot được tải thẳng từ repo này (luôn là bản mới nhất) và chạy trên trang game.
+Dễ nhất: mở **[trang cài đặt](https://damhieu2808.github.io/PokeSurvivorTool/)** trên điện thoại và làm theo. Có hai cách:
+
+- **Userscript (tự chạy, khuyên dùng):** iOS cài app **Userscripts** (Safari), Android dùng **Firefox + Tampermonkey**, rồi bấm nút *Cài bot* trên trang cài đặt để cài [`psbot.user.js`](psbot.user.js). Từ đó cứ mở pokesurvivor.com là bot tự chạy.
+- **Bookmarklet (không cần cài gì):** làm như dưới đây; trang cài đặt có nút *Copy code* 1 chạm.
+
+### Bookmarklet
+
+Trình duyệt điện thoại không cài được Chrome extension, nên có thể dùng **bookmarklet**: một dấu trang chứa đoạn code, bấm vào là bot được tải thẳng từ repo này (luôn là bản mới nhất) và chạy trên trang game.
 
 **Tạo dấu trang (làm 1 lần):**
 
@@ -137,4 +146,6 @@ Tool do **damhieu2808** viết, phát hành theo giấy phép [MIT](LICENSE): b�
 | `moves.js` | Danh sách move của từng pokémon (sinh bởi `crawl-moves.js`) |
 | `crawl-moves.js` | Script tải lại `moves.js` từ wiki |
 | `icons/` | Icon extension |
-| `loader.js` | Nạp bot từ GitHub cho bookmarklet (điện thoại) |
+| `loader.js` | Nạp bot từ GitHub cho bookmarklet / userscript (điện thoại) |
+| `psbot.user.js` | Userscript cài 1 lần (Tampermonkey / Userscripts), tự gọi `loader.js` |
+| `docs/index.html` | Trang cài đặt (GitHub Pages) |
