@@ -1,5 +1,7 @@
 # PokeSurvivorTool
 
+Tác giả: **[damhieu2808](https://github.com/damhieu2808)** · Repo gốc: https://github.com/damhieu2808/PokeSurvivorTool
+
 Bot tự chơi cho [pokesurvivor.com](https://pokesurvivor.com), chạy dưới dạng Chrome extension: tự di chuyển, né, nhặt đồ, chọn skill khi lên cấp theo moveset bạn đặt, tự dùng vật phẩm và tự vào ván mới.
 
 ## Cài đặt
@@ -87,6 +89,10 @@ node crawl-moves.js
 
 - Khi bot đang được nạp, các lượt ghi điểm lên bảng xếp hạng bị chặn, nên kết quả các ván đó không lên leaderboard. Muốn chơi bình thường, tắt extension trong `chrome://extensions` rồi tải lại trang.
 - Bot đọc màn hình game; khi game cập nhật giao diện có thể cần chỉnh lại nhãn (F6/F7) hoặc code.
+
+## Ghi công
+
+Tool do **damhieu2808** viết, phát hành theo giấy phép [MIT](LICENSE): bạn được dùng, chỉnh sửa và chia sẻ lại tự do, **với điều kiện giữ nguyên dòng bản quyền (tên tác giả) và nội dung giấy phép** trong mọi bản sao hay bản đã sửa. Xin để kèm link về repo gốc: https://github.com/damhieu2808/PokeSurvivorTool
 
 ## Cấu trúc thư mục
 

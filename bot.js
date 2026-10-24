@@ -1,9 +1,14 @@
 // ==UserScript==
 // @name         PokeSurvivor Bot
+// @author       damhieu2808
+// @homepageURL  https://github.com/damhieu2808/PokeSurvivorTool
 // @match        https://pokesurvivor.com/*
 // @grant        none
 // @run-at       document-idle
 // ==/UserScript==
+//
+// PokeSurvivor Bot — tác giả: damhieu2808 · https://github.com/damhieu2808/PokeSurvivorTool
+// MIT License (xem LICENSE): dùng lại / chỉnh sửa thì phải giữ dòng bản quyền và giấy phép.
 //
 // Paste into DevTools Console, install as a Tampermonkey userscript, or load this folder as a Chrome extension (manifest.json).
 // F6 = danh mục mọi sprite (ảnh + chỉ số + nút gắn nhãn) · F7 = gắn nhãn bằng click (1 tốt / 2 nguy hiểm / 3 rift / 4 vật cản / 5 buff / 6 kinh nghiệm / 7 vali / 0 xoá)
@@ -664,7 +669,7 @@
   ctl.style.cssText = 'order:0;pointer-events:auto;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
   const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
   ctl.innerHTML = `
-    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot</div>
+    <div style="font-weight:bold;color:#7cf">PokeSurvivor Bot <a href="https://github.com/damhieu2808/PokeSurvivorTool" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></div>
     <label style="display:flex;align-items:center;gap:6px">Số ván
       <input data-ctl="runs" type="number" min="0" step="1" style="width:60px;font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px">
       <span style="color:#9ab">0 = vô hạn</span></label>
@@ -1015,5 +1020,5 @@
       log('unloaded');
     },
   };
-  log('loaded — F8 bật/tắt, F9 overlay, PSBot.sources() để xem sprite');
+  log('loaded — F8 bật/tắt, F9 overlay, PSBot.sources() để xem sprite · tác giả damhieu2808 · https://github.com/damhieu2808/PokeSurvivorTool');
 })();

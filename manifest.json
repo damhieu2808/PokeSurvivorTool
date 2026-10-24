@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "PokeSurvivor Bot",
   "version": "1.0.0",
-  "description": "Auto-play bot and coin-farming preset for pokesurvivor.com (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
+  "description": "Auto-play bot and coin-farming preset for pokesurvivor.com by damhieu2808 (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
+  "homepage_url": "https://github.com/damhieu2808/PokeSurvivorTool",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
