@@ -536,9 +536,14 @@
     if (visible(document.getElementById('lvl-num'))) return;
     const leaves = [...document.querySelectorAll('body *')].filter(e => !e.children.length && visible(e));
     if (leaves.some(e => /only hold one|An item!|Bond!|to bond/i.test(e.innerText || ''))) return;
-    // Only buttons actually on top at their centre (not faded out / covered by the game canvas)
-    const onTop = b => { const r = b.getBoundingClientRect(), t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!t && (t === b || b.contains(t)); };
-    const buttons = [...document.querySelectorAll('button, [role=button]')].filter(b => visible(b) && !panel.contains(b) && onTop(b));
+    // Only buttons actually on top at their centre (not faded out / covered by the game canvas);
+    // the bot's own top-right dock is looked through, so it can't hide the game's Play button
+    const onTop = b => {
+      const r = b.getBoundingClientRect();
+      const t = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find(e => !dock.contains(e));
+      return !!t && (t === b || b.contains(t));
+    };
+    const buttons = [...document.querySelectorAll('button, [role=button]')].filter(b => visible(b) && !dock.contains(b) && onTop(b));
     const over = leaves.some(e => /you fell|game over|has caído|caíste/i.test(e.innerText || ''));
     const menu = buttons.some(b => /^(play|jugar)/i.test((b.innerText || '').trim()) && /dungeon|mazmorra/i.test(b.innerText));
     if (!over && !menu && now - (state.timerChangedAt || 0) < 2500) return;
