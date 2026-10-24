@@ -668,14 +668,17 @@
 
   // ---------- control panel: ▶ play N runs (0 = forever), ⏸ pause / resume, ■ stop ----------
   const RUNS_KEY = 'psbot.runs';
+  // Events stopped at the bot's panels so typing / clicks / touches there never reach the game (keys, touch joystick)
+  const UI_EVENTS = ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click', 'touchstart', 'touchmove', 'touchend'];
   const ctl = document.createElement('div');
-  ctl.dataset.psbotCtl = '';
+  ctl.dataset.psbotCtl = ctl.dataset.psbotUi = '';
   ctl.style.cssText = 'order:0;pointer-events:auto;font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px;min-width:190px';
   const btnCss = 'font:12px monospace;padding:3px 8px;border:1px solid #456;border-radius:4px;cursor:pointer;color:#000';
   ctl.innerHTML = `
     <div style="display:flex;align-items:center;gap:6px;font-weight:bold;color:#7cf"><span style="flex:1">PokeSurvivor Bot v${VERSION} <a href="${REPO}" target="_blank" rel="noopener" style="font-weight:normal;color:#9ab;text-decoration:none" title="Repo gốc trên GitHub">· by damhieu2808</a></span>
       <button data-ctl="min" style="${btnCss};background:#9ab;padding:0 8px" title="Thu gọn / mở rộng">–</button></div>
-    <style>[data-psbot-ctl][data-min] > :not(:first-child) { display: none !important }</style>
+    <style>[data-psbot-ctl][data-min] > :not(:first-child) { display: none !important }
+      @media (pointer: coarse) { [data-psbot-ui] button, [data-psbot-ui] select, [data-psbot-ui] input { min-height: 34px; font-size: 14px !important } }</style>
     <label style="display:flex;align-items:center;gap:6px">Số ván
       <input data-ctl="runs" type="number" min="0" step="1" style="width:60px;font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px">
       <span style="color:#9ab">0 = vô hạn</span></label>
@@ -708,7 +711,7 @@
   $('overlay').onclick = () => { state.debug = !state.debug; };
   $('catalog').onclick = () => toggleCatalog();
   // Keep typing / clicks in the panel away from the game's keyboard and pointer handlers
-  ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click'].forEach(t => ctl.addEventListener(t, e => e.stopPropagation()));
+  UI_EVENTS.forEach(t => ctl.addEventListener(t, e => e.stopPropagation()));
 
   const control = {
     play() {
@@ -754,6 +757,7 @@
   const learnable = name => (MOVES.mons[name.toLowerCase()] || []).map(i => MOVES.moves[i]);
   const currentMon = () => [...state.hudTexts].map(t => t.toLowerCase()).find(t => MOVES.mons[t]) || '';
   const ms = document.createElement('div');
+  ms.dataset.psbotUi = '';
   ms.style.cssText = 'order:1;pointer-events:auto;width:300px;max-width:calc(100vw - 8px);font:12px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;padding:6px 8px;display:none;flex-direction:column;gap:5px';
   const inCss = 'font:12px monospace;background:#223;color:#fff;border:1px solid #456;border-radius:3px;padding:2px 4px';
   ms.innerHTML = `
@@ -768,7 +772,7 @@
     <div data-ms="msg" style="color:#9ab"></div>
     <div data-ms="list" style="color:#9ab;max-height:120px;overflow:auto"></div>`;
   dock.append(ms);
-  ['keydown', 'keyup', 'pointerdown', 'mousedown', 'click'].forEach(t => ms.addEventListener(t, e => e.stopPropagation()));
+  UI_EVENTS.forEach(t => ms.addEventListener(t, e => e.stopPropagation()));
   const $m = k => ms.querySelector(`[data-ms="${k}"]`);
   const moveLabel = m => `${m.name} · ${m.cat === 'status' ? 'buff' : `${m.kind} ${m.dmg ?? '?'}dmg/${m.cd ?? '?'}s`}`;
   function renderMoveset() {
@@ -866,6 +870,7 @@
   }
 
   const panel = document.createElement('div');
+  panel.dataset.psbotUi = '';
   panel.style.cssText = 'order:3;pointer-events:auto;width:380px;max-width:calc(100vw - 8px);min-height:0;flex:0 1 auto;overflow:auto;font:11px monospace;background:#101418ee;color:#ddd;border:1px solid #345;border-radius:6px;display:none';
   dock.append(panel);
   const TAG_LABEL = { good: ['Tốt', '#4f4'], hazard: ['Nguy hiểm', '#f90'], rift: ['Rift', '#f4f'], wall: ['Vật cản', '#88f'], buff: ['Buff', '#ff0'], xp: ['Kinh nghiệm', '#0fc'], case: ['Vali (đứng 5s)', '#fa0'], safe: ['An toàn', '#9cf'] };
@@ -888,7 +893,7 @@
           </div></div>`;
       }).join('');
   }
-  panel.addEventListener('pointerdown', e => e.stopPropagation());
+  UI_EVENTS.forEach(t => panel.addEventListener(t, e => e.stopPropagation()));
   panel.addEventListener('click', e => {
     if (e.target.closest('button[data-export]')) return void window.PSBot.exportConfig();
     const b = e.target.closest('button[data-src]');
