@@ -4,4 +4,4 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com). Miễn phí · tác
 
 **Cài:** [tải ZIP](https://github.com/damhieu2808/PokeSurvivorTool/archive/refs/heads/main.zip), giải nén, `chrome://extensions` → Load unpacked.
 
-Cần cài hộ: liên hệ [damhieu2808](https://github.com/damhieu2808) · [MIT](LICENSE)
+Cần cài hộ: liên hệ [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) · [MIT](LICENSE)
