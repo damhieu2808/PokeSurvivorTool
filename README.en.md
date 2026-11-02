@@ -19,7 +19,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/) and [pokesurvivo
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.2.10/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.3.0/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -29,11 +29,19 @@ The manager checks for new versions on its own from time to time. To update righ
 
 ## Install on iPhone / iPad
 
+There are 3 ways, pick one:
+
+**Way 1: the GEAR app.** Install **Gear Browser** (App Store). Video guide on [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat).
+
+**Way 2: the Orion browser.** Install **Orion Browser** (App Store), add the **Tampermonkey** or **Violentmonkey** extension in Orion, then paste the link from step 3 of the Android section into the address bar, open it and tap **Install**.
+
+**Way 3: Userscripts in Safari.**
+
 1. Install the **Userscripts** app (App Store, free).
-2. Open **Settings → Safari → Extensions → Userscripts**: turn it on and allow it on all websites.
-3. In **Safari**, paste the link from step 3 of the Android section into the address bar and open it.
-4. Tap the extensions icon (puzzle piece or **aA**) in the address bar → **Userscripts** → **Install**.
-5. Open the game in Safari: the panel appears in the top-left corner. iOS is untested; pokesurvivor.com may be blocked as on Android. If something goes wrong, use the contact below.
+2. Open the **iPhone / iPad Settings** → scroll down to **Safari** → **Extensions** → turn on **Userscripts** and choose *Allow on all websites*.
+3. Open Safari, tap the **Userscripts** extension icon → **+ (New remote script)** → paste the link from step 3 of the Android section and save.
+
+Open the game: the panel appears in the top-left corner. If something goes wrong, use the contact below.
 
 ## Buy an activation code
 
@@ -48,7 +56,7 @@ The bot needs a valid **activation code** to run. The panel, Moveset, Level-up a
 
 Lifetime plan: 1 machine, works for as long as the tool does.
 
-⚠ Plans last while the game does not block the tool. If it does, I will try everything to get the tool running again; if nothing works, there is no refund.
+⚠ Plans last while the game does not block the tool. If it does, I will try everything to get the tool running again; if nothing works, the bot stops and there is no refund.
 
 **Free 2-hour trial:** message [Zalo 0355011166](https://zalo.me/0355011166) your machine id (step 1 below). Needs bot 2.0.7 or later.
 
@@ -60,7 +68,7 @@ Lifetime plan: 1 machine, works for as long as the tool does.
 - Renewing before it runs out adds the new days after the current ones. Press **Renew** on the panel to enter the new code.
 - Each browser and each game site (pokesurvivor.com / doofcraft) has its own machine id. Playing both: send both ids, you get one code for both.
 - Clearing the browser's site data changes the machine id: message the author for a new code, no days lost.
-- If a game update breaks the bot, the author will try everything to get it running again; if nothing works, there is no refund.
+- If a game update breaks the bot, the author will try everything to get it running again; if nothing works, the bot stops and there is no refund.
 
 ## Updates
 

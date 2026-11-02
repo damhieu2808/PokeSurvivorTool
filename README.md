@@ -19,7 +19,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/) và [pokesurvivor.d
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.2.10/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.3.0/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -29,11 +29,19 @@ Trình quản lý tự kiểm tra bản mới định kỳ. Muốn cập nhật 
 
 ## Cài trên iPhone / iPad
 
+Có 3 cách, chọn 1:
+
+**Cách 1: app GEAR.** Cài **Gear Browser** (App Store). Video hướng dẫn trên [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat).
+
+**Cách 2: trình duyệt Orion.** Cài **Orion Browser** (App Store), trong Orion cài tiện ích **Tampermonkey** hoặc **Violentmonkey**, rồi dán link ở bước 3 phần Android vào thanh địa chỉ, mở và bấm **Install** (Cài đặt).
+
+**Cách 3: Userscripts trên Safari.**
+
 1. Cài app **Userscripts** (App Store, miễn phí).
-2. Mở **Cài đặt → Safari → Tiện ích → Userscripts**: bật lên và cho phép trên mọi trang web.
-3. Trong **Safari**, dán link ở bước 3 phần Android vào thanh địa chỉ rồi mở.
-4. Bấm biểu tượng tiện ích (hình mảnh ghép hoặc **aA**) trên thanh địa chỉ → **Userscripts** → **Cài đặt** (Install).
-5. Vào game trong Safari: panel hiện ở góc trên bên trái. iOS chưa thử; pokesurvivor.com có thể bị chặn như trên Android. Nếu lỗi, báo qua liên hệ bên dưới.
+2. Vào **Cài đặt (Settings) của iPhone / iPad** → cuộn xuống chọn **Safari** → **Phần mở rộng (Extensions)** → bật **Userscripts** và chọn *Cho phép trên mọi trang web*.
+3. Mở Safari, bấm biểu tượng tiện ích **Userscripts** → **+ (Thêm script mới)** → dán link ở bước 3 phần Android vào rồi lưu lại.
+
+Vào game: panel hiện ở góc trên bên trái. Nếu lỗi, báo qua liên hệ bên dưới.
 
 ## Mua mã kích hoạt
 
@@ -48,7 +56,7 @@ Bot cần **mã kích hoạt** còn hạn để chạy. Panel, Moveset, Level-up
 
 Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 
-⚠ Hạn dùng tính tới khi game chưa chặn tool. Nếu game chặn, mình sẽ tìm mọi cách cho tool chạy lại; thử hết cách vẫn không được thì không hoàn tiền.
+⚠ Hạn dùng tính tới khi game chưa chặn tool. Nếu game chặn, mình sẽ tìm mọi cách cho tool chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại và không hoàn tiền.
 
 **Dùng thử miễn phí 2 giờ:** nhắn [Zalo 0355011166](https://zalo.me/0355011166) mã máy của bạn (bước 1 bên dưới). Cần bot từ bản 2.0.7.
 
@@ -60,7 +68,7 @@ Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 - Gia hạn trước khi hết hạn: ngày mới được cộng nối tiếp, không mất ngày. Bấm **Gia hạn** trên panel để nhập mã mới.
 - Mỗi trình duyệt và mỗi trang game (pokesurvivor.com / doofcraft) có mã máy riêng. Chơi cả 2 trang thì gửi cả 2 mã máy, tác giả làm 1 mã dùng chung.
 - Xoá dữ liệu trình duyệt (cookie / dữ liệu trang) sẽ đổi mã máy: nhắn tác giả để được cấp lại, không mất ngày.
-- Game cập nhật làm bot hỏng: tác giả sẽ tìm mọi cách cho bot chạy lại; thử hết cách vẫn không được thì không hoàn tiền.
+- Game cập nhật làm bot hỏng: tác giả sẽ tìm mọi cách cho bot chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại và không hoàn tiền.
 
 ## Cập nhật
 
