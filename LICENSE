@@ -20,7 +20,7 @@ sites/default/pilot.js and sites/default/hook.js contain code ported from pokesu
 
 MIT License
 
-Copyright (c) BoundlessEgret
+Copyright (c) 2026 BoundlessEgret
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -94,3 +94,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--------------------------------------------------------------------------------
+Thanks / Cảm ơn
+
+Thanks to the authors whose open-source work this bot builds on:
+Cảm ơn các tác giả đã chia sẻ mã nguồn mở mà bot này dựa vào:
+
+- BoundlessEgret, pokesurvivor-autofarm: https://github.com/BoundlessEgret/pokesurvivor-autofarm
+- aparmor2, pokesurvivor-mod: https://github.com/aparmor2/pokesurvivor-mod
+- readygolol, PokéSurvivor Trash Time Helper: https://greasyfork.org/scripts/600408

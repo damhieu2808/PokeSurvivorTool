@@ -19,7 +19,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/) and [pokesurvivo
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.2/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.3/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -76,3 +76,11 @@ Lifetime plan: 1 machine, works for as long as the tool does.
 - **Phone:** the userscript manager updates it from time to time (or tap **Check for updates**).
 
 Need help installing: contact [Zalo 0355011166](https://zalo.me/0355011166) or [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) · [License](LICENSE)
+
+## Thanks
+
+The bot uses open-source code (MIT License) by these authors, details in [LICENSE](LICENSE). Thank you for sharing:
+
+- [BoundlessEgret · pokesurvivor-autofarm](https://github.com/BoundlessEgret/pokesurvivor-autofarm)
+- [aparmor2 · pokesurvivor-mod](https://github.com/aparmor2/pokesurvivor-mod)
+- [readygolol · PokéSurvivor Trash Time Helper](https://greasyfork.org/scripts/600408)

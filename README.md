@@ -19,7 +19,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/) và [pokesurvivor.d
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.2/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.3/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -76,3 +76,11 @@ Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 - **Điện thoại:** trình quản lý userscript tự cập nhật định kỳ (hoặc bấm **Check for updates**).
 
 Cần cài hộ: liên hệ [Zalo 0355011166](https://zalo.me/0355011166) hoặc [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) · [Giấy phép](LICENSE)
+
+## Cảm ơn
+
+Bot có dùng mã nguồn mở (giấy phép MIT) của các tác giả sau, chi tiết trong [LICENSE](LICENSE). Cảm ơn các bạn đã chia sẻ:
+
+- [BoundlessEgret · pokesurvivor-autofarm](https://github.com/BoundlessEgret/pokesurvivor-autofarm)
+- [aparmor2 · pokesurvivor-mod](https://github.com/aparmor2/pokesurvivor-mod)
+- [readygolol · PokéSurvivor Trash Time Helper](https://greasyfork.org/scripts/600408)
