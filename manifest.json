@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "PokeSurvivor Bot",
-  "version": "2.4.4",
-  "description": "Auto-play bot and coin-farming preset for pokesurvivor.com and pokesurvivor.doofcraft.com by damhieu2808 (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
+  "version": "3.0.0",
+  "description": "Auto-play bot and coin-farming preset for pokesurvivor.com, pokesurvivor.doofcraft.com and pokelit.0d4y.cc by damhieu2808 (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
   "homepage_url": "https://github.com/damhieu2808/PokeSurvivorTool",
   "icons": {
     "16": "icons/icon16.png",
@@ -24,7 +24,8 @@
       "matches": [
         "https://pokesurvivor.com/*",
         "https://www.pokesurvivor.com/*",
-        "https://pokesurvivor.doofcraft.com/*"
+        "https://pokesurvivor.doofcraft.com/*",
+        "https://pokelit.0d4y.cc/*"
       ],
       "js": [
         "core/keepalive.js"
@@ -44,6 +45,16 @@
     },
     {
       "matches": [
+        "https://pokelit.0d4y.cc/*"
+      ],
+      "js": [
+        "sites/pokelit/hook.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
         "https://pokesurvivor.com/*",
         "https://www.pokesurvivor.com/*"
       ],
@@ -52,6 +63,20 @@
         "sites/default/pilot.js",
         "sites/default/data.js",
         "core/moves.js",
+        "core/bot.js",
+        "core/farmMoney.js"
+      ],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://pokelit.0d4y.cc/*"
+      ],
+      "js": [
+        "sites/pokelit/site.js",
+        "sites/pokelit/pilot.js",
+        "sites/pokelit/data.js",
         "core/bot.js",
         "core/farmMoney.js"
       ],

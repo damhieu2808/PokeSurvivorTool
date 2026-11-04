@@ -2,7 +2,9 @@
 
 [Tiếng Việt](README.md) · **English**
 
-Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/) and [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) (detects the game version from the site). Paid, cheap ([how to buy](#buy-an-activation-code)) · by [damhieu2808](https://github.com/damhieu2808)
+Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) and [PokéLit](https://pokelit.0d4y.cc/) (detects the game version from the site). Paid, cheap ([how to buy](#buy-an-activation-code)) · by [damhieu2808](https://github.com/damhieu2808)
+
+> **Version 3.0.0:** adds PokéLit. Only needed if you play PokéLit; nothing changed for pokesurvivor.com / Doofcraft, no need to update.
 
 ## Install on PC (Chrome)
 
@@ -19,7 +21,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/) and [pokesurvivo
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.4/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.0/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -66,7 +68,7 @@ Lifetime plan: 1 machine, works for as long as the tool does.
 4. Paste the code you get (starts with `PSB1.`) into the panel → **Enter** → **▶ Run**.
 
 - Renewing before it runs out adds the new days after the current ones. Press **Renew** on the panel to enter the new code.
-- Each browser and each game site (pokesurvivor.com / doofcraft) has its own machine id. Playing both: send both ids, you get one code for both.
+- Each browser and each game site (pokesurvivor.com / doofcraft / PokéLit) has its own machine id. Playing several: send the id of each, you get one code for all.
 - Clearing the browser's site data changes the machine id: message the author for a new code, no days lost.
 - If a game update breaks the bot, the author will try everything to get it running again; if nothing works, the bot stops and there is no refund.
 
@@ -74,6 +76,9 @@ Lifetime plan: 1 machine, works for as long as the tool does.
 
 - **PC:** when the panel shows the yellow line "⬆ Có bản mới" (new version available), download the ZIP from step 1 again and unzip it over the old folder.
 - **Phone:** the userscript manager updates it from time to time (or tap **Check for updates**).
+- **PokéLit:** that site doesn't let the bot check for new versions, so there is no "⬆ New version" line: look on pokesurvivor.com / doofcraft or the Releases page.
+
+**PokéLit note:** the game has an anti-cheat, and a run with tampered timer functions earns nothing. So on PokéLit the bot does **not run in the background**: keep the game window on screen (partly covered by another window is fine); minimised, in another tab, or fully covered by another window, Chrome stops drawing and the game freezes. If the game's **Auto level / Auto item** (or Quick level-ups / Auto bond) is on, the bot stands down and hides the matching tab; Moveset stays while Auto bond is off, because it sets the bond order.
 
 Need help installing: contact [Zalo 0355011166](https://zalo.me/0355011166) or [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) · [License](LICENSE)
 

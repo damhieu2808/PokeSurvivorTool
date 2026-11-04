@@ -2,7 +2,9 @@
 
 **Tiếng Việt** · [English](README.en.md)
 
-Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/) và [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) (tự nhận bản game theo trang). Có phí, giá rẻ ([cách mua](#mua-mã-kích-hoạt)) · tác giả [damhieu2808](https://github.com/damhieu2808)
+Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) và [PokéLit](https://pokelit.0d4y.cc/) (tự nhận bản game theo trang). Có phí, giá rẻ ([cách mua](#mua-mã-kích-hoạt)) · tác giả [damhieu2808](https://github.com/damhieu2808)
+
+> **Bản 3.0.0:** thêm PokéLit. Chỉ cần cập nhật nếu bạn chơi PokéLit; pokesurvivor.com / Doofcraft không đổi gì, không cần cập nhật.
 
 ## Cài trên máy tính (Chrome)
 
@@ -19,7 +21,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/) và [pokesurvivor.d
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v2.4.4/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.0/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -66,7 +68,7 @@ Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 4. Nhận mã (bắt đầu bằng `PSB1.`), dán vào ô trên panel → **Nhập** → **▶ Chạy**.
 
 - Gia hạn trước khi hết hạn: ngày mới được cộng nối tiếp, không mất ngày. Bấm **Gia hạn** trên panel để nhập mã mới.
-- Mỗi trình duyệt và mỗi trang game (pokesurvivor.com / doofcraft) có mã máy riêng. Chơi cả 2 trang thì gửi cả 2 mã máy, tác giả làm 1 mã dùng chung.
+- Mỗi trình duyệt và mỗi trang game (pokesurvivor.com / doofcraft / PokéLit) có mã máy riêng. Chơi nhiều trang thì gửi mã máy của từng trang, tác giả làm 1 mã dùng chung.
 - Xoá dữ liệu trình duyệt (cookie / dữ liệu trang) sẽ đổi mã máy: nhắn tác giả để được cấp lại, không mất ngày.
 - Game cập nhật làm bot hỏng: tác giả sẽ tìm mọi cách cho bot chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại và không hoàn tiền.
 
@@ -74,6 +76,9 @@ Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 
 - **Máy tính:** khi panel hiện dòng vàng "⬆ Có bản mới", tải lại ZIP ở bước 1 rồi giải nén đè lên thư mục cũ.
 - **Điện thoại:** trình quản lý userscript tự cập nhật định kỳ (hoặc bấm **Check for updates**).
+- **PokéLit:** trang này không cho bot kiểm tra bản mới, nên không có dòng "⬆ Có bản mới": xem bản mới ở pokesurvivor.com / doofcraft hoặc trang Releases.
+
+**Lưu ý PokéLit:** game có chống gian lận, ván nào bị sửa hàm hẹn giờ thì không nhận thưởng. Vì vậy trên PokéLit bot **không chạy nền**: để cửa sổ game hiện trên màn hình (cửa sổ khác che một phần vẫn được); thu nhỏ, chuyển tab khác hoặc để cửa sổ khác che kín thì Chrome dừng vẽ và game đứng. Nếu bật **Auto level / Auto item** trong game (hoặc Quick level-ups / Auto bond), bot tự nhường và ẩn tab tương ứng; Moveset vẫn hiện khi Auto bond tắt vì nó dùng để xếp thứ tự bond.
 
 Cần cài hộ: liên hệ [Zalo 0355011166](https://zalo.me/0355011166) hoặc [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) · [Giấy phép](LICENSE)
 
