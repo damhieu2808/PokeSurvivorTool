@@ -23,7 +23,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.d
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.1/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -65,8 +65,8 @@ Lifetime plan: 1 machine, works for as long as the tool does.
 **Free 2-hour trial:** message [Zalo 0355011166](https://zalo.me/0355011166) your machine id (step 1 below). Needs bot 2.0.7 or later.
 
 1. Install the bot and open the game. The panel shows **🔒 An activation code is needed** and your **machine id** (like `ABCD-1234`): press **Copy**.
-2. Pay by bank transfer (the panel's **💳 Buy a code** tab has the QR code and account), with the machine id as the message.
-3. Message [Zalo 0355011166 (Đàm Xuân Hiếu)](https://zalo.me/0355011166) or [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) the transfer screenshot + machine id.
+2. Message [Zalo 0355011166 (Đàm Xuân Hiếu)](https://zalo.me/0355011166) or [TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat) the plan you want + machine id.
+3. Pay with the transfer details sent back to you, then send the transfer screenshot.
 4. Paste the code you get (starts with `PSB1.`) into the panel → **Enter** → **▶ Run**.
 
 - Renewing before it runs out adds the new days after the current ones. Press **Renew** on the panel to enter the new code.
