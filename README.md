@@ -14,14 +14,16 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doof
 
 ## Cài trên điện thoại (Android)
 
-> ℹ️ Toàn bộ bot nằm sẵn trong file userscript. Trình quản lý userscript tự chạy code đó trong trang, nên việc pokesurvivor.com chặn script chèn vào trang (CSP) không còn ảnh hưởng. Khuyên dùng **Firefox**. Edge / Kiwi + Tampermonkey trên Android từng không chạy được với bản cũ; với cách mới thì chưa thử lại.
+> ℹ️ Toàn bộ bot nằm sẵn trong file userscript. Trình quản lý userscript tự chạy code đó trong trang, nên việc pokesurvivor.com chặn script chèn vào trang (CSP) không còn ảnh hưởng. Khuyên dùng **Kiwi Browser** (có [video hướng dẫn trên TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat)); Firefox cũng được.
 
-1. Cài **Firefox** (CH Play).
-2. Trong Firefox, cài tiện ích **Violentmonkey** hoặc **Tampermonkey** (menu ⋮ → Tiện ích / Add-ons).
+1. Cài trình duyệt: **Kiwi Browser** (khuyên dùng) hoặc **Firefox** (CH Play).
+2. Cài trình quản lý userscript:
+   - Kiwi: cài **Tampermonkey** từ Chrome Web Store (menu ⋮ → Extensions), làm theo video TikTok ở trên.
+   - Firefox: cài tiện ích **Violentmonkey** hoặc **Tampermonkey** (menu ⋮ → Tiện ích / Add-ons).
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.0/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.

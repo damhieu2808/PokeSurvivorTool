@@ -14,14 +14,16 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.d
 
 ## Install on a phone (Android)
 
-> ℹ️ The whole bot is inside the userscript file. The userscript manager runs that code in the page itself, so pokesurvivor.com blocking scripts added to the page (CSP) no longer matters. **Firefox** is recommended. Edge / Kiwi + Tampermonkey on Android did not work with the old version; the new way is not tested there yet.
+> ℹ️ The whole bot is inside the userscript file. The userscript manager runs that code in the page itself, so pokesurvivor.com blocking scripts added to the page (CSP) no longer matters. **Kiwi Browser** is recommended (there is a [video guide on TikTok @phuongnguyenconhat](https://www.tiktok.com/@phuongnguyenconhat)); Firefox works too.
 
-1. Install **Firefox** (Play Store).
-2. In Firefox, install the **Violentmonkey** or **Tampermonkey** add-on (menu ⋮ → Add-ons).
+1. Install a browser: **Kiwi Browser** (recommended) or **Firefox** (Play Store).
+2. Install a userscript manager:
+   - Kiwi: install **Tampermonkey** from the Chrome Web Store (menu ⋮ → Extensions), following the TikTok video above.
+   - Firefox: install the **Violentmonkey** or **Tampermonkey** add-on (menu ⋮ → Add-ons).
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.0/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/main/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
