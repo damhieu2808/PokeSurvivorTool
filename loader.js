@@ -11,7 +11,7 @@
   const site = /doofcraft/i.test(location.hostname) ? 'doofcraft' : lit ? 'pokelit' : 'default';
   // moves.js is pokesurvivor.com's table; doofcraft reads its own from the game (SITE.moveTable, since 1.7.10), PokéLit
   // from its G (none when loaded this late: the bot then reads the canvas)
-  const FILES = [`sites/${site}/site.js`, `sites/${site}/data.js`, ...(site === 'default' ? ['core/moves.js'] : []), 'core/bot.js', 'core/farmMoney.js'];
+  const FILES = [`sites/${site}/site.js`, `sites/${site}/data.js`, ...(lit ? ['sites/pokelit/shop.js'] : []), ...(site === 'default' ? ['core/moves.js'] : []), 'core/bot.js', 'core/farmMoney.js'];
   // PokéLit's CSP limits fetch (connect-src) but not scripts: the files come as <script src> from jsDelivr, in order
   if (lit) {
     for (const f of FILES) {
