@@ -23,7 +23,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doof
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.4/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.5/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -53,10 +53,10 @@ Bot cần **mã kích hoạt** còn hạn để chạy. Panel, Moveset, Level-up
 
 | Gói | Giá |
 |---|---|
-| 10 ngày | 30k |
-| 30 ngày | 70k |
-| 90 ngày | 180k |
-| Vĩnh viễn | 350k |
+| 10 ngày | 50k |
+| 30 ngày | 100k ⭐ Phổ biến |
+| 90 ngày | 200k |
+| Vĩnh viễn | 400k 🔥 Hời nhất (trả 1 lần, 1 máy) |
 
 Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 
