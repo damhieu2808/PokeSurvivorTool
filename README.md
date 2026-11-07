@@ -23,7 +23,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doof
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.7/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.8/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -60,7 +60,7 @@ Bot cần **mã kích hoạt** còn hạn để chạy. Panel, Moveset, Level-up
 
 Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 
-⚠ Hạn dùng tính tới khi game chưa chặn tool. Nếu game chặn, mình sẽ tìm mọi cách cho tool chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại và không hoàn tiền.
+⚠ Đã mua thì không hoàn tiền, kể cả khi game sập hoặc game chặn tool. Hạn dùng tính tới khi game chưa chặn tool. Nếu game chặn, mình sẽ tìm mọi cách cho tool chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại.
 
 **Dùng thử miễn phí 2 giờ:** nhắn [Zalo 0355011166](https://zalo.me/0355011166) mã máy của bạn (bước 1 bên dưới). Cần bot từ bản 2.0.7.
 
