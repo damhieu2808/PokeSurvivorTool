@@ -23,7 +23,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.d
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.15/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.16/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -46,21 +46,6 @@ There are 3 ways, pick one:
 3. Open Safari, tap the **Userscripts** extension icon → **+ (New remote script)** → paste the link from step 3 of the Android section and save.
 
 Open the game: the panel appears in the top-left corner. If something goes wrong, use the contact below.
-
-## Run schedule (⏰ Schedule tab)
-
-**Off** by default: the bot plays non-stop. To have it play in sessions with breaks, pick a level to fill in the boxes, then change any of them:
-
-| Level | Session | Break | Max in 24 h | Between runs |
-|---|---|---|---|---|
-| Off | no limit | none | none | none |
-| Light | 3–4 h | 15–30 min | 16 h | 8–25 s |
-| Medium | 2–3 h | 25–45 min | 12 h | 15–60 s |
-| Careful | 1–1.5 h | 30–60 min | 8 h | 30–120 s |
-
-The bot only rests after a run ends, back in the lobby, never in the middle of one. Empty or 0 turns that one off. During a break, press **⏭ Play now** to skip it. Keep the page open and the bot goes back to playing when the break ends.
-
-A schedule only makes non-stop play less obvious, it **does not guarantee you avoid a ban**.
 
 ## Buy an activation code
 

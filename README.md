@@ -23,7 +23,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doof
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.15/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.0.16/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.
@@ -73,21 +73,6 @@ Gói vĩnh viễn: 1 máy, dùng tới khi tool còn hoạt động.
 - Mỗi trình duyệt và mỗi trang game (pokesurvivor.com / doofcraft / PokéLit) có mã máy riêng. Chơi nhiều trang thì gửi mã máy của từng trang, tác giả làm 1 mã dùng chung.
 - Xoá dữ liệu trình duyệt (cookie / dữ liệu trang) sẽ đổi mã máy: nhắn tác giả để được cấp lại, không mất ngày.
 - Game cập nhật làm bot hỏng: tác giả sẽ tìm mọi cách cho bot chạy lại; thử hết cách vẫn không được thì bot sẽ dừng lại và không hoàn tiền.
-
-## Lịch chạy (tab ⏰ Lịch)
-
-Mặc định **Tắt**: bot chơi liên tục. Muốn bot chơi theo phiên, có nghỉ thì chọn mức để điền sẵn các ô, rồi sửa từng ô tùy ý:
-
-| Mức | Phiên chơi | Nghỉ giữa phiên | Tối đa trong 24 giờ | Chờ giữa 2 ván |
-|---|---|---|---|---|
-| Tắt | không giới hạn | không | không | không |
-| Nhẹ | 3–4 giờ | 15–30 phút | 16 giờ | 8–25 giây |
-| Vừa | 2–3 giờ | 25–45 phút | 12 giờ | 15–60 giây |
-| Cẩn thận | 1–1,5 giờ | 30–60 phút | 8 giờ | 30–120 giây |
-
-Bot chỉ nghỉ khi hết ván, về sảnh rồi mới đếm giờ nghỉ, không cắt ngang trận. Để trống hoặc 0 thì tắt riêng mục đó. Đang nghỉ, bấm **⏭ Chơi ngay** để bỏ qua. Cứ để trang mở, hết nghỉ bot tự chơi tiếp.
-
-Lịch chạy chỉ giảm dấu hiệu chơi liên tục, **không bảo đảm tránh bị ban**.
 
 ## Cập nhật
 
