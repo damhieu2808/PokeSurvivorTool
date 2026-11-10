@@ -2,7 +2,7 @@
 
 **Tiếng Việt** · [English](README.en.md)
 
-Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) và [PokéLit](https://pokelit.0d4y.cc/) (tự nhận bản game theo trang). Có phí, giá rẻ ([cách mua](#mua-mã-kích-hoạt)) · tác giả [damhieu2808](https://github.com/damhieu2808)
+Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) [PokéLit](https://pokelit.0d4y.cc/) và [PokéLoop](https://pokeloop.online/) (tự nhận bản game theo trang). Có phí, giá rẻ ([cách mua](#mua-mã-kích-hoạt)) · tác giả [damhieu2808](https://github.com/damhieu2808)
 
 > **Bản 3.0.0:** thêm PokéLit. Chỉ cần cập nhật nếu bạn chơi PokéLit; pokesurvivor.com / Doofcraft không đổi gì, không cần cập nhật.
 
@@ -23,7 +23,7 @@ Bot tự chơi [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doof
 3. Bấm nút copy ở góc khối dưới đây, dán vào **thanh địa chỉ** của trình duyệt đó rồi mở:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.1/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.2/psbot.user.js
 ```
 
 4. Trình quản lý tự mở trang cài script → bấm **Install** (Cài đặt). Đã cài bản cũ thì cài đè lên.

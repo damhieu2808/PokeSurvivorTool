@@ -2,7 +2,7 @@
 
 [Tiếng Việt](README.md) · **English**
 
-Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) and [PokéLit](https://pokelit.0d4y.cc/) (detects the game version from the site). Paid, cheap ([how to buy](#buy-an-activation-code)) · by [damhieu2808](https://github.com/damhieu2808)
+Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.doofcraft.com](https://pokesurvivor.doofcraft.com/) [PokéLit](https://pokelit.0d4y.cc/) and [PokéLoop](https://pokeloop.online/) (detects the game version from the site). Paid, cheap ([how to buy](#buy-an-activation-code)) · by [damhieu2808](https://github.com/damhieu2808)
 
 > **Version 3.0.0:** adds PokéLit. Only needed if you play PokéLit; nothing changed for pokesurvivor.com / Doofcraft, no need to update.
 
@@ -23,7 +23,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.d
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.1/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.2/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
