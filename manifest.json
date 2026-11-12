@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PokeSurvivor Bot",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Auto-play bot and coin-farming preset for pokesurvivor.com, pokesurvivor.doofcraft.com, pokelit.0d4y.cc and pokeloop.online by damhieu2808 (F6 catalog, F7 tag, F8 on/off, F9 overlay).",
   "homepage_url": "https://github.com/damhieu2808/PokeSurvivorTool",
   "icons": {
@@ -103,6 +103,7 @@
         "sites/pokeloop/site.js",
         "sites/pokeloop/pilot.js",
         "sites/pokeloop/data.js",
+        "sites/pokeloop/shop.js",
         "core/bot.js",
         "core/farmMoney.js"
       ],
