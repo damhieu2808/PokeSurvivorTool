@@ -23,7 +23,7 @@ Auto-play bot for [pokesurvivor.com](https://pokesurvivor.com/), [pokesurvivor.d
 3. Tap the copy button on the block below, paste into that browser's **address bar** and open it:
 
 ```
-https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.4/psbot.user.js
+https://raw.githubusercontent.com/damhieu2808/PokeSurvivorTool/v3.1.5/psbot.user.js
 ```
 
 4. The manager opens its install page → tap **Install**. If an older version is installed, install over it.
@@ -56,9 +56,10 @@ The bot needs a valid **activation code** to run. The panel, Moveset, Level-up a
 | 10 days | 50k |
 | 30 days | 100k ⭐ Popular |
 | 90 days | 200k |
-| Lifetime | 400k 🔥 Best deal (pay once, 1 machine) |
+| Lifetime | 400k 🔥 Best deal (pay once, 1 game, 1 machine) |
+| Extra game on a lifetime plan | +100k / game |
 
-Lifetime plan: 1 machine, works for as long as the tool does.
+Lifetime plan: 1 game of your choice, 1 machine, works for as long as the tool does. Each extra game is +100k, added whenever you like.
 
 ⚠ Use at your own risk. If your game account gets banned (for using the tool or buying resources), that is on you. NO REFUNDS once purchased, in any case: ban, game down or the tool blocked. Plans last only until the game blocks the tool; I will try to fix it, and if it cannot be fixed the bot stops for good.
 
